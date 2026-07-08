@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>画像PDF変換ツール｜無料で簡単</title>
+<title>PDFツール｜画像→PDF / PDF→画像</title>
 
 <style>
     body {
@@ -13,12 +13,13 @@
         margin: auto;
         background: #fff;
         color: #333;
+        line-height: 1.8;
     }
-    h1 {
+    h1, h2 {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
-    #dropZone {
+    #dropZoneImg, #dropZonePdf {
         width: 100%;
         min-height: 200px;
         padding: 20px;
@@ -58,7 +59,6 @@
     button:hover {
         background: #005fcc;
     }
-
     @media (max-width: 600px) {
         .thumb { width: 90px; }
         button { font-size: 20px; padding: 16px; }
@@ -67,126 +67,195 @@
 </head>
 <body>
 
-<h1>画像PDF変換ツール</h1>
+<h1>PDFツール</h1>
 <p style="text-align:center;color:#555;">
-画像をドラッグ＆ドロップして、PDFに変換できます。
+画像 → PDF と PDF → 画像 をこのページでまとめて使えます。
 </p>
 
-<div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
+<!-- 画像 → PDF -->
+<h2>画像 → PDF 変換</h2>
+
+<div id="dropZoneImg">ここに画像をドラッグ＆ドロップ</div>
 
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInputImg" multiple><br><br>
 
-<button onclick="convertToPDF()">PDFに変換する（複数画像 → 1つのPDF）</button>
+<button onclick="convertToPDF()">画像をPDFに変換する</button>
 
-<!-- ★ 追加：画像リセットボタン -->
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
 
-<p style="margin-top:30px; text-align:center;">
+<hr style="margin:40px 0;">
+
+<!-- PDF → 画像 -->
+<h2>PDF → 画像 変換</h2>
+
+<div id="dropZonePdf">ここにPDFをドラッグ＆ドロップ</div>
+
+<br>
+<input type="file" id="fileInputPdf" accept="application/pdf"><br><br>
+
+<button onclick="convertPdfToImages()">PDFを画像に変換する</button>
+
+<button onclick="resetPdf()" style="background:#888;margin-top:10px;">
+    PDFをリセットする
+</button>
+
+<p style="margin-top:40px; text-align:center;">
     <a href="/">トップページに戻る</a>
 </p>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
 <script>
-let selectedFiles = [];
+let selectedImages = [];
+let selectedPdf = null;
 
-const dropZone = document.getElementById("dropZone");
+/* ------------------------------
+   画像 → PDF
+------------------------------ */
 
-dropZone.addEventListener("dragover", (e) => {
+const dropZoneImg = document.getElementById("dropZoneImg");
+
+dropZoneImg.addEventListener("dragover", e => {
     e.preventDefault();
-    dropZone.style.background = "#ddeaff";
+    dropZoneImg.style.background = "#ddeaff";
 });
-dropZone.addEventListener("dragleave", () => {
-    dropZone.style.background = "#eef5ff";
+dropZoneImg.addEventListener("dragleave", () => {
+    dropZoneImg.style.background = "#eef5ff";
 });
-dropZone.addEventListener("drop", (e) => {
+dropZoneImg.addEventListener("drop", e => {
     e.preventDefault();
-    dropZone.style.background = "#eef5ff";
-    addFiles([...e.dataTransfer.files]);
+    dropZoneImg.style.background = "#eef5ff";
+    addImages([...e.dataTransfer.files]);
 });
 
-document.getElementById("fileInput").addEventListener("change", (e) => {
-    addFiles([...e.target.files]);
+document.getElementById("fileInputImg").addEventListener("change", e => {
+    addImages([...e.target.files]);
 });
 
-function addFiles(files) {
-    selectedFiles = selectedFiles.concat(files);
-    showThumbnails();
+function addImages(files) {
+    selectedImages = selectedImages.concat(files);
+    showImageThumbs();
 }
 
-function showThumbnails() {
-    dropZone.innerHTML = "";
-    selectedFiles.forEach(file => {
+function showImageThumbs() {
+    dropZoneImg.innerHTML = "";
+    selectedImages.forEach(file => {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = e => {
             const div = document.createElement("div");
             div.className = "thumb";
             div.innerHTML = `
                 <img src="${e.target.result}">
                 <div>${file.name}</div>
             `;
-            dropZone.appendChild(div);
+            dropZoneImg.appendChild(div);
         };
         reader.readAsDataURL(file);
     });
 }
 
 function convertToPDF() {
-    if (selectedFiles.length === 0) return alert("画像を選んでください");
+    if (selectedImages.length === 0) return alert("画像を選んでください");
 
-    const pdfCanvas = document.createElement("canvas");
-    const pdfCtx = pdfCanvas.getContext("2d");
+    const pdf = new jspdf.jsPDF();
 
-    const pdfPages = [];
-
-    let processed = 0;
-
-    selectedFiles.forEach((file, index) => {
+    selectedImages.forEach((file, index) => {
         const img = new Image();
         img.onload = () => {
-            pdfCanvas.width = img.width;
-            pdfCanvas.height = img.height;
-            pdfCtx.drawImage(img, 0, 0);
-
-            const imgData = pdfCanvas.toDataURL("image/jpeg", 1.0);
-            pdfPages.push(imgData);
-
-            processed++;
-            if (processed === selectedFiles.length) {
-                generatePDF(pdfPages);
+            const w = pdf.internal.pageSize.getWidth();
+            const h = pdf.internal.pageSize.getHeight();
+            pdf.addImage(img, "JPEG", 0, 0, w, h);
+            if (index < selectedImages.length - 1) pdf.addPage();
+            if (index === selectedImages.length - 1) {
+                pdf.save("converted.pdf");
+                alert("PDF変換が完了しました！");
             }
         };
         img.src = URL.createObjectURL(file);
     });
 }
 
-function generatePDF(pages) {
-    const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: "a4"
-    });
-
-    pages.forEach((img, index) => {
-        if (index !== 0) pdf.addPage();
-        pdf.addImage(img, "JPEG", 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
-    });
-
-    pdf.save("converted.pdf");
-    alert("PDF変換が完了しました！");
+function resetImages() {
+    selectedImages = [];
+    dropZoneImg.innerHTML = "ここに画像をドラッグ＆ドロップ";
+    document.getElementById("fileInputImg").value = "";
 }
 
-function resetImages() {
-    selectedFiles = [];
-    dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
-    document.getElementById("fileInput").value = "";
+/* ------------------------------
+   PDF → 画像
+------------------------------ */
+
+const dropZonePdf = document.getElementById("dropZonePdf");
+
+dropZonePdf.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropZonePdf.style.background = "#ddeaff";
+});
+dropZonePdf.addEventListener("dragleave", () => {
+    dropZonePdf.style.background = "#eef5ff";
+});
+dropZonePdf.addEventListener("drop", e => {
+    e.preventDefault();
+    dropZonePdf.style.background = "#eef5ff";
+    addPdf(e.dataTransfer.files[0]);
+});
+
+document.getElementById("fileInputPdf").addEventListener("change", e => {
+    addPdf(e.target.files[0]);
+});
+
+function addPdf(file) {
+    if (!file || file.type !== "application/pdf") {
+        alert("PDFファイルを選んでください");
+        return;
+    }
+    selectedPdf = file;
+    dropZonePdf.innerHTML = `<div>${file.name}</div>`;
+}
+
+async function convertPdfToImages() {
+    if (!selectedPdf) return alert("PDFを選んでください");
+
+    const pdfData = await selectedPdf.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 2 });
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({ canvasContext: ctx, viewport }).promise;
+
+        canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            download(url, `page_${i}.png`);
+        });
+    }
+
+    alert("PDF → 画像変換が完了しました！");
+}
+
+function resetPdf() {
+    selectedPdf = null;
+    dropZonePdf.innerHTML = "ここにPDFをドラッグ＆ドロップ";
+    document.getElementById("fileInputPdf").value = "";
+}
+
+function download(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
 }
 </script>
 
-<!-- jsPDF 読み込み -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 </body>
 </html>
-

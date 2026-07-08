@@ -143,6 +143,10 @@
 <h2 style="margin-top:30px;">トリミング結果プレビュー</h2>
 <div id="previewZone"></div>
 
+<p style="margin-top:30px; text-align:center;">
+    <a href="/">トップページに戻る</a>
+</p>
+
 <script>
 let selectedFiles = [];
 
@@ -169,7 +173,7 @@ document.getElementById("fileInput").addEventListener("change", (e) => {
 function addFiles(files) {
     selectedFiles = selectedFiles.concat(files);
     showThumbnails();
-    cropImages(); // ★リアルタイム処理
+    cropImages();
 }
 
 function showThumbnails() {

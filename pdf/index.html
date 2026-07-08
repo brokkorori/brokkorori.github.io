@@ -1,1 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画像PDF変換ツール｜無料で簡単</title>
+
+<style>
+    body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+        background: #fff;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    #dropZone {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px;
+        border: 2px dashed #88a;
+        background: #eef5ff;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 20px;
+        transition: 0.2s;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    .thumb {
+        width: 120px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .thumb img {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 20px;
+        width: 100%;
+    }
+    button:hover {
+        background: #005fcc;
+    }
+
+    @media (max-width: 600px) {
+        .thumb { width: 90px; }
+        button { font-size: 20px; padding: 16px; }
+    }
+</style>
+</head>
+<body>
+
+<h1>画像PDF変換ツール</h1>
+<p style="text-align:center;color:#555;">
+画像をドラッグ＆ドロップして、PDFに変換できます。
+</p>
+
+<div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
+
+<br>
+<input type="file" id="fileInput" multiple><br><br>
+
+<button onclick="convertToPDF()">PDFに変換する（複数画像 → 1つのPDF）</button>
+
+<!-- ★ 追加：画像リセットボタン -->
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">
+    画像をリセットする
+</button>
+
+<p style="margin-top:30px; text-align:center;">
+    <a href="/">トップページに戻る</a>
+</p>
+
+<script>
+let selectedFiles = [];
+
+const dropZone = document.getElementById("dropZone");
+
+dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#ddeaff";
+});
+dropZone.addEventListener("dragleave", () => {
+    dropZone.style.background = "#eef5ff";
+});
+dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#eef5ff";
+    addFiles([...e.dataTransfer.files]);
+});
+
+document.getElementById("fileInput").addEventListener("change", (e) => {
+    addFiles([...e.target.files]);
+});
+
+function addFiles(files) {
+    selectedFiles = selectedFiles.concat(files);
+    showThumbnails();
+}
+
+function showThumbnails() {
+    dropZone.innerHTML = "";
+    selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const div = document.createElement("div");
+            div.className = "thumb";
+            div.innerHTML = `
+                <img src="${e.target.result}">
+                <div>${file.name}</div>
+            `;
+            dropZone.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function convertToPDF() {
+    if (selectedFiles.length === 0) return alert("画像を選んでください");
+
+    const pdfCanvas = document.createElement("canvas");
+    const pdfCtx = pdfCanvas.getContext("2d");
+
+    const pdfPages = [];
+
+    let processed = 0;
+
+    selectedFiles.forEach((file, index) => {
+        const img = new Image();
+        img.onload = () => {
+            pdfCanvas.width = img.width;
+            pdfCanvas.height = img.height;
+            pdfCtx.drawImage(img, 0, 0);
+
+            const imgData = pdfCanvas.toDataURL("image/jpeg", 1.0);
+            pdfPages.push(imgData);
+
+            processed++;
+            if (processed === selectedFiles.length) {
+                generatePDF(pdfPages);
+            }
+        };
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+function generatePDF(pages) {
+    const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: "a4"
+    });
+
+    pages.forEach((img, index) => {
+        if (index !== 0) pdf.addPage();
+        pdf.addImage(img, "JPEG", 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+    });
+
+    pdf.save("converted.pdf");
+    alert("PDF変換が完了しました！");
+}
+
+function resetImages() {
+    selectedFiles = [];
+    dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
+    document.getElementById("fileInput").value = "";
+}
+</script>
+
+<!-- jsPDF 読み込み -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</body>
+</html>
 

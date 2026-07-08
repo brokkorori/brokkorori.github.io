@@ -58,6 +58,33 @@
     button:hover {
         background: #005fcc;
     }
+
+    /* ★ スマホ最適化 */
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        #dropZone {
+            min-height: 150px;
+            padding: 10px;
+        }
+        .thumb {
+            width: 90px;
+        }
+        input[type="number"] {
+            width: 100%;
+            font-size: 18px;
+            padding: 12px;
+            margin-top: 5px;
+        }
+        label {
+            font-size: 18px;
+        }
+        button {
+            font-size: 20px;
+            padding: 16px;
+        }
+    }
 </style>
 </head>
 <body>
@@ -83,6 +110,10 @@
 </label>
 
 <button onclick="resizeImages()">リサイズする（複数対応）</button>
+
+<p style="margin-top:30px; text-align:center;">
+    <a href="/">トップページに戻る</a>
+</p>
 
 <script>
 let selectedFiles = [];
@@ -182,4 +213,3 @@ function download(url, filename) {
 
 </body>
 </html>
-

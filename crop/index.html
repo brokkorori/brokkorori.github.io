@@ -45,7 +45,6 @@
         border: 1px solid #ccc;
     }
 
-    /* 入力欄（PCでもスマホでも見やすい） */
     .inputBox {
         background: #f7f7f7;
         padding: 15px;
@@ -72,7 +71,6 @@
         border: 1px solid #aaa;
     }
 
-    /* プレビュー */
     #previewZone {
         margin-top: 30px;
         display: flex;
@@ -102,15 +100,6 @@
     button:hover {
         background: #005fcc;
     }
-
-    /* スマホ最適化 */
-    @media (max-width: 600px) {
-        .thumb { width: 90px; }
-        .inputBox { flex-direction: column; }
-        .inputItem { width: 100%; }
-        .previewItem img { max-width: 150px; }
-        button { font-size: 20px; padding: 16px; }
-    }
 </style>
 </head>
 <body>
@@ -125,7 +114,6 @@
 <br>
 <input type="file" id="fileInput" multiple><br><br>
 
-<!-- 入力欄 -->
 <div class="inputBox">
     <div class="inputItem">
         <label>切り取り開始位置（x）</label>
@@ -155,17 +143,12 @@
 <h2 style="margin-top:30px;">トリミング結果プレビュー</h2>
 <div id="previewZone"></div>
 
-<p style="margin-top:30px; text-align:center;">
-    <a href="/">トップページに戻る</a>
-</p>
-
 <script>
 let selectedFiles = [];
 
 const dropZone = document.getElementById("dropZone");
 const previewZone = document.getElementById("previewZone");
 
-/* ドロップ処理 */
 dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropZone.style.background = "#ddeaff";
@@ -179,19 +162,16 @@ dropZone.addEventListener("drop", (e) => {
     addFiles([...e.dataTransfer.files]);
 });
 
-/* ファイル選択 */
 document.getElementById("fileInput").addEventListener("change", (e) => {
     addFiles([...e.target.files]);
 });
 
-/* 画像追加 → サムネイル表示 → 自動トリミング */
 function addFiles(files) {
     selectedFiles = selectedFiles.concat(files);
     showThumbnails();
-    cropImages(); // ★画像選択時に自動トリミング
+    cropImages(); // ★リアルタイム処理
 }
 
-/* サムネイル表示 */
 function showThumbnails() {
     dropZone.innerHTML = "";
     selectedFiles.forEach(file => {
@@ -209,7 +189,6 @@ function showThumbnails() {
     });
 }
 
-/* ★リアルタイムトリミング */
 function cropImages() {
     if (selectedFiles.length === 0) return;
 
@@ -247,21 +226,14 @@ function cropImages() {
     });
 }
 
-/* 入力変更時もリアルタイム反映 */
 document.querySelectorAll("#cropX, #cropY, #cropW, #cropH")
     .forEach(input => input.addEventListener("input", cropImages));
 
-/* リセット */
 function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
     previewZone.innerHTML = "";
     document.getElementById("fileInput").value = "";
-
-    document.getElementById("cropX").value = 0;
-    document.getElementById("cropY").value = 0;
-    document.getElementById("cropW").value = 300;
-    document.getElementById("cropH").value = 300;
 }
 </script>
 

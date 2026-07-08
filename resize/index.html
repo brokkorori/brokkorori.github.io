@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画像リサイズツール｜無料で簡単</title>
+
+<style>
+    body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+        background: #fff;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    #dropZone {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px;
+        border: 2px dashed #88a;
+        background: #eef5ff;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 20px;
+        transition: 0.2s;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    .thumb {
+        width: 120px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .thumb img {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 20px;
+        width: 100%;
+    }
+    button:hover {
+        background: #005fcc;
+    }
+</style>
+</head>
+<body>
+
+<h1>画像リサイズツール</h1>
+<p style="text-align:center;color:#555;">
+画像をドラッグ＆ドロップして、好きなサイズに変更できます。
+</p>
+
+<div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
+
+<br>
+<input type="file" id="fileInput" multiple><br><br>
+
+幅(px): <input type="number" id="resizeWidth" value="800">
+高さ(px): <input type="number" id="resizeHeight" value="600">
+
+<br><br>
+
+<label>
+    <input type="checkbox" id="keepRatio" checked>
+    縦横比を維持する
+</label>
+
+<button onclick="resizeImages()">リサイズする（複数対応）</button>
+
+<script>
+let selectedFiles = [];
+
+// ドロップゾーン
+const dropZone = document.getElementById("dropZone");
+
+dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#ddeaff";
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.style.background = "#eef5ff";
+});
+
+dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#eef5ff";
+    addFiles([...e.dataTransfer.files]);
+});
+
+// ファイル選択
+document.getElementById("fileInput").addEventListener("change", (e) => {
+    addFiles([...e.target.files]);
+});
+
+// ファイル追加
+function addFiles(files) {
+    selectedFiles = selectedFiles.concat(files);
+    showThumbnails();
+}
+
+// サムネイル表示
+function showThumbnails() {
+    dropZone.innerHTML = "";
+    selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const div = document.createElement("div");
+            div.className = "thumb";
+            div.innerHTML = `
+                <img src="${e.target.result}">
+                <div>${file.name}</div>
+            `;
+            dropZone.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// リサイズ処理
+function resizeImages() {
+    if (selectedFiles.length === 0) return alert("画像を選んでください");
+
+    const w = parseInt(document.getElementById("resizeWidth").value);
+    const h = parseInt(document.getElementById("resizeHeight").value);
+    const keepRatio = document.getElementById("keepRatio").checked;
+
+    selectedFiles.forEach((file, index) => {
+        const img = new Image();
+        img.onload = () => {
+            let newW = w;
+            let newH = h;
+
+            if (keepRatio) {
+                const ratio = img.height / img.width;
+                newH = Math.round(newW * ratio);
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = newW;
+            canvas.height = newH;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, newW, newH);
+
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const baseName = file.name.replace(/\.[^/.]+$/, "");
+                download(url, `${baseName}_resized_${index}.png`);
+            });
+        };
+        img.src = URL.createObjectURL(file);
+    });
+
+    alert("リサイズが完了しました！");
+}
+
+// ダウンロード
+function download(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+}
+</script>
+
+</body>
+</html>
 

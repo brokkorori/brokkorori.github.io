@@ -104,6 +104,11 @@
 
 <button onclick="convertImages()">画像を変換する（複数対応）</button>
 
+<!-- ★ 追加：画像リセットボタン -->
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">
+    画像をリセットする
+</button>
+
 <p style="margin-top:30px; text-align:center;">
     <a href="/">トップページに戻る</a>
 </p>
@@ -192,6 +197,13 @@ function download(url, filename) {
     a.href = url;
     a.download = filename;
     a.click();
+}
+
+// ★ 追加：画像リセット機能
+function resetImages() {
+    selectedFiles = [];
+    dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
+    document.getElementById("fileInput").value = "";
 }
 </script>
 

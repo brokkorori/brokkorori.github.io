@@ -45,7 +45,7 @@
         border: 1px solid #ccc;
     }
 
-    /* ★ PCでもスマホでも見やすい入力欄 */
+    /* 入力欄（PCでもスマホでも見やすい） */
     .inputBox {
         background: #f7f7f7;
         padding: 15px;
@@ -72,7 +72,7 @@
         border: 1px solid #aaa;
     }
 
-    /* ★ プレビュー */
+    /* プレビュー */
     #previewZone {
         margin-top: 30px;
         display: flex;
@@ -103,7 +103,7 @@
         background: #005fcc;
     }
 
-    /* ★ スマホ最適化 */
+    /* スマホ最適化 */
     @media (max-width: 600px) {
         .thumb { width: 90px; }
         .inputBox { flex-direction: column; }
@@ -117,7 +117,7 @@
 
 <h1>画像トリミングツール</h1>
 <p style="text-align:center;color:#555;">
-画像をドラッグ＆ドロップして、指定した範囲でトリミングできます。
+画像を選んだ瞬間に自動でトリミング結果を表示します。
 </p>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
@@ -125,7 +125,7 @@
 <br>
 <input type="file" id="fileInput" multiple><br><br>
 
-<!-- ★ PCでも見やすい入力欄 -->
+<!-- 入力欄 -->
 <div class="inputBox">
     <div class="inputItem">
         <label>切り取り開始位置（x）</label>
@@ -148,8 +148,6 @@
     </div>
 </div>
 
-<button onclick="cropImages()">画像をトリミングする（複数対応）</button>
-
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
@@ -167,30 +165,33 @@ let selectedFiles = [];
 const dropZone = document.getElementById("dropZone");
 const previewZone = document.getElementById("previewZone");
 
+/* ドロップ処理 */
 dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropZone.style.background = "#ddeaff";
 });
-
 dropZone.addEventListener("dragleave", () => {
     dropZone.style.background = "#eef5ff";
 });
-
 dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
     dropZone.style.background = "#eef5ff";
     addFiles([...e.dataTransfer.files]);
 });
 
+/* ファイル選択 */
 document.getElementById("fileInput").addEventListener("change", (e) => {
     addFiles([...e.target.files]);
 });
 
+/* 画像追加 → サムネイル表示 → 自動トリミング */
 function addFiles(files) {
     selectedFiles = selectedFiles.concat(files);
     showThumbnails();
+    cropImages(); // ★画像選択時に自動トリミング
 }
 
+/* サムネイル表示 */
 function showThumbnails() {
     dropZone.innerHTML = "";
     selectedFiles.forEach(file => {
@@ -208,8 +209,9 @@ function showThumbnails() {
     });
 }
 
+/* ★リアルタイムトリミング */
 function cropImages() {
-    if (selectedFiles.length === 0) return alert("画像を選んでください");
+    if (selectedFiles.length === 0) return;
 
     previewZone.innerHTML = "";
 
@@ -239,16 +241,17 @@ function cropImages() {
                     <div>${baseName}_cropped_${index}.png</div>
                 `;
                 previewZone.appendChild(previewDiv);
-
-                download(url, `${baseName}_cropped_${index}.png`);
             });
         };
         img.src = URL.createObjectURL(file);
     });
-
-    alert("トリミングが完了しました！");
 }
 
+/* 入力変更時もリアルタイム反映 */
+document.querySelectorAll("#cropX, #cropY, #cropW, #cropH")
+    .forEach(input => input.addEventListener("input", cropImages));
+
+/* リセット */
 function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
@@ -259,13 +262,6 @@ function resetImages() {
     document.getElementById("cropY").value = 0;
     document.getElementById("cropW").value = 300;
     document.getElementById("cropH").value = 300;
-}
-
-function download(url, filename) {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
 }
 </script>
 

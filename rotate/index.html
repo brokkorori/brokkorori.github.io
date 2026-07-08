@@ -2,10 +2,6 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="vie<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>画像回転ツール｜無料で簡単</title>
 
@@ -63,7 +59,6 @@
         background: #005fcc;
     }
 
-    /* ★ スマホ最適化 */
     @media (max-width: 600px) {
         body {
             padding: 10px;
@@ -108,7 +103,6 @@
 
 <button onclick="rotateImages()">画像を回転する（複数対応）</button>
 
-<!-- ★ 追加：画像リセットボタン -->
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
@@ -205,7 +199,6 @@ function download(url, filename) {
     a.click();
 }
 
-/* ★ 追加：画像リセット機能 */
 function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
@@ -215,201 +208,3 @@ function resetImages() {
 
 </body>
 </html>
-wport" content="width=device-width, initial-scale=1.0">
-<title>画像回転ツール｜無料で簡単</title>
-
-<style>
-    body {
-        font-family: sans-serif;
-        padding: 20px;
-        max-width: 900px;
-        margin: auto;
-        background: #fff;
-        color: #333;
-    }
-    h1 {
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    #dropZone {
-        width: 100%;
-        min-height: 200px;
-        padding: 20px;
-        border: 2px dashed #88a;
-        background: #eef5ff;
-        border-radius: 10px;
-        text-align: center;
-        margin-top: 20px;
-        transition: 0.2s;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: flex-start;
-        justify-content: flex-start;
-    }
-    .thumb {
-        width: 120px;
-        text-align: center;
-        font-size: 12px;
-    }
-    .thumb img {
-        width: 100%;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
-    button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 14px 20px;
-        border-radius: 8px;
-        font-size: 18px;
-        cursor: pointer;
-        margin-top: 20px;
-        width: 100%;
-    }
-    button:hover {
-        background: #005fcc;
-    }
-
-    /* ★ スマホ最適化 */
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        select {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
-    }
-</style>
-</head>
-<body>
-
-<h1>画像回転ツール</h1>
-<p style="text-align:center;color:#555;">
-画像をドラッグ＆ドロップして、90°・180°・270°に回転できます。
-</p>
-
-<div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
-
-<br>
-<input type="file" id="fileInput" multiple><br><br>
-
-<select id="rotate">
-    <option value="90">90° 回転</option>
-    <option value="180">180° 回転</option>
-    <option value="270">270° 回転</option>
-</select>
-
-<button onclick="rotateImages()">画像を回転する（複数対応）</button>
-
-<p style="margin-top:30px; text-align:center;">
-    <a href="/">トップページに戻る</a>
-</p>
-
-<script>
-let selectedFiles = [];
-
-const dropZone = document.getElementById("dropZone");
-
-dropZone.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropZone.style.background = "#ddeaff";
-});
-
-dropZone.addEventListener("dragleave", () => {
-    dropZone.style.background = "#eef5ff";
-});
-
-dropZone.addEventListener("drop", (e) => {
-    e.preventDefault();
-    dropZone.style.background = "#eef5ff";
-    addFiles([...e.dataTransfer.files]);
-});
-
-document.getElementById("fileInput").addEventListener("change", (e) => {
-    addFiles([...e.target.files]);
-});
-
-function addFiles(files) {
-    selectedFiles = selectedFiles.concat(files);
-    showThumbnails();
-}
-
-function showThumbnails() {
-    dropZone.innerHTML = "";
-    selectedFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const div = document.createElement("div");
-            div.className = "thumb";
-            div.innerHTML = `
-                <img src="${e.target.result}">
-                <div>${file.name}</div>
-            `;
-            dropZone.appendChild(div);
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-function rotateImages() {
-    if (selectedFiles.length === 0) return alert("画像を選んでください");
-
-    const angle = parseInt(document.getElementById("rotate").value);
-
-    selectedFiles.forEach((file, index) => {
-        const img = new Image();
-        img.onload = () => {
-            let canvas = document.createElement("canvas");
-            let ctx = canvas.getContext("2d");
-
-            if (angle === 90 || angle === 270) {
-                canvas.width = img.height;
-                canvas.height = img.width;
-            } else {
-                canvas.width = img.width;
-                canvas.height = img.height;
-            }
-
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(angle * Math.PI / 180);
-            ctx.drawImage(img, -img.width / 2, -img.height / 2);
-
-            canvas.toBlob(blob => {
-                const url = URL.createObjectURL(blob);
-                const baseName = file.name.replace(/\.[^/.]+$/, "");
-                download(url, `${baseName}_rotated_${angle}_${index}.png`);
-            });
-        };
-        img.src = URL.createObjectURL(file);
-    });
-
-    alert("回転が完了しました！");
-}
-
-function download(url, filename) {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-}
-</script>
-
-</body>
-</html>
-

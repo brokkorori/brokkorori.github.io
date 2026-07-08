@@ -45,6 +45,34 @@
         border: 1px solid #ccc;
     }
 
+    /* ★ PCでもスマホでも見やすい入力欄 */
+    .inputBox {
+        background: #f7f7f7;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .inputItem {
+        display: flex;
+        flex-direction: column;
+        width: 200px;
+    }
+    .inputItem label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .inputItem input {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+    }
+
+    /* ★ プレビュー */
     #previewZone {
         margin-top: 30px;
         display: flex;
@@ -75,21 +103,13 @@
         background: #005fcc;
     }
 
+    /* ★ スマホ最適化 */
     @media (max-width: 600px) {
         .thumb { width: 90px; }
-        input[type="number"] {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 5px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
-        .previewItem img {
-            max-width: 150px;
-        }
+        .inputBox { flex-direction: column; }
+        .inputItem { width: 100%; }
+        .previewItem img { max-width: 150px; }
+        button { font-size: 20px; padding: 16px; }
     }
 </style>
 </head>
@@ -105,10 +125,28 @@
 <br>
 <input type="file" id="fileInput" multiple><br><br>
 
-切り取り開始位置（x）: <input type="number" id="cropX" value="0">
-切り取り開始位置（y）: <input type="number" id="cropY" value="0">
-切り取り幅（w）: <input type="number" id="cropW" value="300">
-切り取り高さ（h）: <input type="number" id="cropH" value="300">
+<!-- ★ PCでも見やすい入力欄 -->
+<div class="inputBox">
+    <div class="inputItem">
+        <label>切り取り開始位置（x）</label>
+        <input type="number" id="cropX" value="0">
+    </div>
+
+    <div class="inputItem">
+        <label>切り取り開始位置（y）</label>
+        <input type="number" id="cropY" value="0">
+    </div>
+
+    <div class="inputItem">
+        <label>切り取り幅（w）</label>
+        <input type="number" id="cropW" value="300">
+    </div>
+
+    <div class="inputItem">
+        <label>切り取り高さ（h）</label>
+        <input type="number" id="cropH" value="300">
+    </div>
+</div>
 
 <button onclick="cropImages()">画像をトリミングする（複数対応）</button>
 

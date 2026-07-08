@@ -44,6 +44,22 @@
         border-radius: 6px;
         border: 1px solid #ccc;
     }
+
+    #previewZone {
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .previewItem {
+        text-align: center;
+    }
+    .previewItem img {
+        max-width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
     button {
         background: #007bff;
         color: white;
@@ -59,18 +75,8 @@
         background: #005fcc;
     }
 
-    /* ★ スマホ最適化 */
     @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
+        .thumb { width: 90px; }
         input[type="number"] {
             width: 100%;
             font-size: 18px;
@@ -80,6 +86,9 @@
         button {
             font-size: 20px;
             padding: 16px;
+        }
+        .previewItem img {
+            max-width: 150px;
         }
     }
 </style>
@@ -103,6 +112,13 @@
 
 <button onclick="cropImages()">画像をトリミングする（複数対応）</button>
 
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">
+    画像をリセットする
+</button>
+
+<h2 style="margin-top:30px;">トリミング結果プレビュー</h2>
+<div id="previewZone"></div>
+
 <p style="margin-top:30px; text-align:center;">
     <a href="/">トップページに戻る</a>
 </p>
@@ -111,6 +127,7 @@
 let selectedFiles = [];
 
 const dropZone = document.getElementById("dropZone");
+const previewZone = document.getElementById("previewZone");
 
 dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
@@ -156,6 +173,8 @@ function showThumbnails() {
 function cropImages() {
     if (selectedFiles.length === 0) return alert("画像を選んでください");
 
+    previewZone.innerHTML = "";
+
     const cropX = parseInt(document.getElementById("cropX").value);
     const cropY = parseInt(document.getElementById("cropY").value);
     const cropW = parseInt(document.getElementById("cropW").value);
@@ -174,6 +193,15 @@ function cropImages() {
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 const baseName = file.name.replace(/\.[^/.]+$/, "");
+
+                const previewDiv = document.createElement("div");
+                previewDiv.className = "previewItem";
+                previewDiv.innerHTML = `
+                    <img src="${url}">
+                    <div>${baseName}_cropped_${index}.png</div>
+                `;
+                previewZone.appendChild(previewDiv);
+
                 download(url, `${baseName}_cropped_${index}.png`);
             });
         };
@@ -181,6 +209,18 @@ function cropImages() {
     });
 
     alert("トリミングが完了しました！");
+}
+
+function resetImages() {
+    selectedFiles = [];
+    dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
+    previewZone.innerHTML = "";
+    document.getElementById("fileInput").value = "";
+
+    document.getElementById("cropX").value = 0;
+    document.getElementById("cropY").value = 0;
+    document.getElementById("cropW").value = 300;
+    document.getElementById("cropH").value = 300;
 }
 
 function download(url, filename) {
@@ -193,4 +233,3 @@ function download(url, filename) {
 
 </body>
 </html>
-

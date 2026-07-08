@@ -14,7 +14,7 @@
     <style>
         body {
             font-family: sans-serif;
-            max-width: 900px;
+            max-width: 1200px; /* ★ PCで見やすく拡張 */
             margin: auto;
             padding: 20px;
             background: #fff;
@@ -28,27 +28,50 @@
             text-align: center;
             color: #555;
         }
-        ul {
+
+        /* ★ カード型レイアウト（PCで見やすい） */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
             margin-top: 30px;
-            padding-left: 0;
-            list-style: none;
         }
-        li {
-            margin: 12px 0;
+        .card {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .card:hover {
+            background: #eef5ff;
+            border-color: #88a;
+        }
+        .card a {
             font-size: 18px;
-        }
-        a {
             color: #007bff;
             text-decoration: none;
         }
-        a:hover {
+        .card a:hover {
             text-decoration: underline;
         }
+
         footer {
             margin-top: 40px;
             text-align: center;
             font-size: 14px;
             color: #777;
+        }
+
+        /* ★ スマホ最適化 */
+        @media (max-width: 600px) {
+            .card {
+                padding: 15px;
+            }
+            .card a {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -57,15 +80,16 @@
 <h1>オンライン画像編集ツール</h1>
 <p>ブラウザだけで画像を変換・リサイズ・圧縮できる無料ツールです。</p>
 
-<h2>利用できる機能</h2>
-<ul>
-    <li><a href="/image-convert/">画像変換（JPEG / PNG / WebP）</a></li>
-    <li><a href="/resize/">画像リサイズ</a></li>
-    <li><a href="/compress/">画像圧縮</a></li>
-    <li><a href="/crop/">画像トリミング</a></li>
-    <li><a href="/rotate/">画像回転</a></li>
-    <li><a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a></li>
-</ul>
+<h2 style="text-align:center;">利用できる機能</h2>
+
+<div class="grid">
+    <div class="card"><a href="/image-convert/">画像変換（JPEG / PNG / WebP）</a></div>
+    <div class="card"><a href="/resize/">画像リサイズ</a></div>
+    <div class="card"><a href="/compress/">画像圧縮</a></div>
+    <div class="card"><a href="/crop/">画像トリミング</a></div>
+    <div class="card"><a href="/rotate/">画像回転</a></div>
+    <div class="card"><a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a></div>
+</div>
 
 <footer>
     <a href="/privacy/">プライバシーポリシー</a> |

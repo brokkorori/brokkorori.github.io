@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>画像圧縮ツール｜無料で簡単</title>
+
+<title>画像圧縮ツール｜JPEG・PNG・WebPを高品質のまま圧縮できる無料オンラインツール</title>
+
+<meta name="description" content="画像を高品質のまま圧縮できる無料オンラインツール。JPEG・PNG・WebPに対応し、ドラッグ＆ドロップで簡単にファイルサイズを削減できます。複数画像の一括圧縮にも対応。">
+
+<meta name="keywords" content="画像圧縮, JPEG圧縮, PNG圧縮, WebP圧縮, ファイルサイズ削減, 画像軽量化, 無料ツール">
+
+<meta property="og:title" content="画像圧縮ツール｜JPEG・PNG・WebPを高品質のまま圧縮できる無料オンラインツール">
+<meta property="og:description" content="ブラウザだけでJPEG・PNG・WebPのファイルサイズを削減できる無料オンラインツール。複数画像の一括圧縮にも対応。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
+<meta property="og:url" content="https://brokkorori.github.io/compress/">
 
 <style>
     body {
@@ -59,7 +70,6 @@
         background: #005fcc;
     }
 
-    /* ★ スマホ最適化 */
     @media (max-width: 600px) {
         body {
             padding: 10px;
@@ -83,9 +93,11 @@
 </head>
 <body>
 
-<h1>画像圧縮ツール</h1>
+<h1>画像圧縮ツール（JPEG / PNG / WebP）</h1>
+
 <p style="text-align:center;color:#555;">
-画像をドラッグ＆ドロップして、JPEG・PNG・WebP を圧縮できます。
+この画像圧縮ツールは、ブラウザだけで JPEG・PNG・WebP のファイルサイズを削減できる無料オンラインサービスです。
+画質を保ちながら圧縮でき、複数画像の一括圧縮にも対応しています。インストール不要で、ドラッグ＆ドロップするだけで簡単に使えます。
 </p>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
@@ -98,7 +110,6 @@
 
 <button onclick="compressImages()">画像を圧縮する（複数対応）</button>
 
-<!-- ★ 追加：画像リセットボタン -->
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
@@ -190,7 +201,6 @@ function download(url, filename) {
     a.click();
 }
 
-/* ★ 追加：画像リセット機能 */
 function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";

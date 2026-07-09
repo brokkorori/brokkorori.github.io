@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>画像変換ツール｜JPEG・PNG・WebPに対応</title>
+
+<title>画像変換ツール｜JPEG・PNG・WebPに一括変換できる無料オンラインツール</title>
+
+<meta name="description" content="画像をドラッグ＆ドロップするだけでJPEG・PNG・WebPに変換できる無料オンラインツール。複数画像の一括変換、画質維持、スマホ対応。インストール不要で簡単に使えます。">
+
+<meta name="keywords" content="画像変換, JPEG変換, PNG変換, WebP変換, 一括変換, 無料ツール, オンライン画像編集">
+
+<meta property="og:title" content="画像変換ツール｜JPEG・PNG・WebPに一括変換できる無料オンラインツール">
+<meta property="og:description" content="ブラウザだけでJPEG・PNG・WebPに変換できる無料オンラインツール。複数画像の一括変換にも対応。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
+<meta property="og:url" content="https://brokkorori.github.io/image-convert/">
 
 <style>
     body {
@@ -59,7 +70,6 @@
         background: #005fcc;
     }
 
-    /* ★ スマホ最適化 */
     @media (max-width: 600px) {
         body {
             padding: 10px;
@@ -86,9 +96,11 @@
 </head>
 <body>
 
-<h1>画像変換ツール</h1>
+<h1>画像変換ツール（JPEG / PNG / WebP）</h1>
+
 <p style="text-align:center;color:#555;">
-画像をドラッグ＆ドロップして、JPEG・PNG・WebP に変換できます。
+この画像変換ツールは、ブラウザだけで JPEG・PNG・WebP に変換できる無料オンラインサービスです。
+複数画像の一括変換に対応し、ドラッグ＆ドロップするだけで簡単に使えます。インストール不要でスマホでも利用できます。
 </p>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
@@ -104,7 +116,6 @@
 
 <button onclick="convertImages()">画像を変換する（複数対応）</button>
 
-<!-- ★ 追加：画像リセットボタン -->
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
@@ -199,7 +210,7 @@ function download(url, filename) {
     a.click();
 }
 
-// ★ 追加：画像リセット機能
+// 画像リセット機能
 function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";

@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>画像リサイズツール｜無料で簡単</title>
+
+<title>画像リサイズツール｜縦横比を維持してサイズ変更できる無料オンラインツール</title>
+
+<meta name="description" content="画像のサイズを簡単に変更できる無料オンライン画像リサイズツール。縦横比を維持したリサイズ、ピクセル指定、複数画像の一括処理に対応。ドラッグ＆ドロップで簡単に使えます。">
+
+<meta name="keywords" content="画像リサイズ, サイズ変更, 縦横比維持, 画像編集, 無料ツール, オンライン画像編集">
+
+<meta property="og:title" content="画像リサイズツール｜縦横比を維持してサイズ変更できる無料オンラインツール">
+<meta property="og:description" content="ブラウザだけで画像のサイズを変更できる無料オンラインツール。縦横比維持やピクセル指定に対応。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
+<meta property="og:url" content="https://brokkorori.github.io/resize/">
 
 <style>
     body {
@@ -59,7 +70,6 @@
         background: #005fcc;
     }
 
-    /* ★ スマホ最適化 */
     @media (max-width: 600px) {
         body {
             padding: 10px;
@@ -89,9 +99,11 @@
 </head>
 <body>
 
-<h1>画像リサイズツール</h1>
+<h1>画像リサイズツール（縦横比維持対応）</h1>
+
 <p style="text-align:center;color:#555;">
-画像をドラッグ＆ドロップして、好きなサイズに変更できます。
+この画像リサイズツールは、ブラウザだけで画像のサイズを変更できる無料オンラインサービスです。
+縦横比を維持したリサイズやピクセル指定に対応し、複数画像の一括処理も可能。ドラッグ＆ドロップするだけで簡単に使えます。
 </p>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
@@ -111,7 +123,6 @@
 
 <button onclick="resizeImages()">リサイズする（複数対応）</button>
 
-<!-- ★ 追加：画像リセットボタン -->
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
@@ -215,7 +226,7 @@ function download(url, filename) {
     a.click();
 }
 
-// ★ 追加：画像リセット機能
+// 画像リセット機能
 function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";

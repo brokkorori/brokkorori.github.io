@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>オンライン画像編集ツール｜変換・リサイズ・圧縮に対応</title>
+    <title>オンライン画像編集ツール｜画像変換・リサイズ・圧縮・トリミング対応</title>
 
-    <meta name="description" content="画像をブラウザだけで編集できる無料ツール。JPEG・PNG・WebPへの変換、リサイズ、圧縮などに対応。ドラッグ＆ドロップで簡単に使えます。">
+    <meta name="description" content="画像をブラウザだけで編集できる無料ツール。JPEG・PNG・WebP変換、リサイズ、圧縮、トリミング、回転、PDF変換に対応。ドラッグ＆ドロップで簡単に使えます。">
+
+    <meta name="keywords" content="画像編集, 画像変換, 画像リサイズ, 画像圧縮, WebP変換, JPEG変換, PNG変換, PDF変換, 無料ツール">
+
+    <meta property="og:title" content="オンライン画像編集ツール｜画像変換・リサイズ・圧縮・トリミング対応">
+    <meta property="og:description" content="ブラウザだけで画像を編集できる無料ツール。JPEG・PNG・WebP変換、リサイズ、圧縮、トリミング、回転、PDF変換に対応。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
+    <meta property="og:url" content="https://brokkorori.github.io/">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5394192651024190"
      crossorigin="anonymous"></script>
@@ -14,7 +22,7 @@
     <style>
         body {
             font-family: sans-serif;
-            max-width: 1100px; /* ★ PCで見やすく拡張（カード型より自然） */
+            max-width: 1100px;
             margin: auto;
             padding: 40px 20px;
             background: #fff;
@@ -29,18 +37,15 @@
             color: #555;
             margin-bottom: 40px;
         }
-
-        /* ★ シンプルなリストをPC向けに最適化 */
         ul {
             list-style: none;
             padding-left: 0;
-            max-width: 600px;
+            max-width: 700px;
             margin: auto;
         }
         li {
             margin: 18px 0;
             font-size: 20px;
-            text-align: center;
         }
         a {
             color: #007bff;
@@ -49,7 +54,11 @@
         a:hover {
             text-decoration: underline;
         }
-
+        .desc {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
         footer {
             margin-top: 50px;
             text-align: center;
@@ -63,15 +72,41 @@
 <h1>オンライン画像編集ツール</h1>
 <p>ブラウザだけで画像を変換・リサイズ・圧縮できる無料ツールです。</p>
 
-<h2 style="text-align:center;">利用できる機能</h2>
+<section>
+<h2 style="text-align:center;">このサイトでできること</h2>
+<p>
+このサイトは、ブラウザだけで画像を編集できる無料オンラインツールです。
+画像の変換（JPEG / PNG / WebP）、リサイズ、圧縮、トリミング、回転、PDF変換など、
+日常的に必要な画像処理をすべてまとめて行えます。
+インストール不要で、ドラッグ＆ドロップするだけで簡単に使えます。
+</p>
+</section>
 
 <ul>
-    <li><a href="/image-convert/">画像変換（JPEG / PNG / WebP）</a></li>
-    <li><a href="/resize/">画像リサイズ</a></li>
-    <li><a href="/compress/">画像圧縮</a></li>
-    <li><a href="/crop/">画像トリミング</a></li>
-    <li><a href="/rotate/">画像回転</a></li>
-    <li><a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a></li>
+    <li>
+        <a href="/image-convert/">画像変換（JPEG / PNG / WebP）</a>
+        <div class="desc">画像形式を簡単に変換できます。複数ファイルの一括変換にも対応。</div>
+    </li>
+    <li>
+        <a href="/resize/">画像リサイズ</a>
+        <div class="desc">縦横比を維持したままサイズ変更できます。</div>
+    </li>
+    <li>
+        <a href="/compress/">画像圧縮</a>
+        <div class="desc">画質を保ちながらファイルサイズを小さくできます。</div>
+    </li>
+    <li>
+        <a href="/crop/">画像トリミング</a>
+        <div class="desc">不要な部分を切り抜いて保存できます。</div>
+    </li>
+    <li>
+        <a href="/rotate/">画像回転</a>
+        <div class="desc">画像を90度・180度など自由に回転できます。</div>
+    </li>
+    <li>
+        <a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a>
+        <div class="desc">画像をPDFに変換したり、PDFを画像に変換できます。</div>
+    </li>
 </ul>
 
 <footer>

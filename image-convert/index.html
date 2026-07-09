@@ -4,17 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>画像変換ツール｜JPEG・PNG・WebPに一括変換できる無料オンラインツール</title>
+<title>画像変換ツール｜JPEG・PNG・WebP・HEICに一括変換できる無料オンラインツール</title>
 
-<meta name="description" content="画像をドラッグ＆ドロップするだけでJPEG・PNG・WebPに変換できる無料オンラインツール。複数画像の一括変換、画質維持、スマホ対応。インストール不要で簡単に使えます。">
+<meta name="description" content="画像をドラッグ＆ドロップするだけでJPEG・PNG・WebPに変換できる無料オンラインツール。iPhoneのHEIC画像にも対応し、複数画像の一括変換が可能。インストール不要でスマホでも利用できます。">
 
-<meta name="keywords" content="画像変換, JPEG変換, PNG変換, WebP変換, 一括変換, 無料ツール, オンライン画像編集">
+<meta name="keywords" content="画像変換, JPEG変換, PNG変換, WebP変換, HEIC変換, iPhone画像, 一括変換, 無料ツール, オンライン画像編集">
 
-<meta property="og:title" content="画像変換ツール｜JPEG・PNG・WebPに一括変換できる無料オンラインツール">
-<meta property="og:description" content="ブラウザだけでJPEG・PNG・WebPに変換できる無料オンラインツール。複数画像の一括変換にも対応。">
+<meta property="og:title" content="画像変換ツール｜JPEG・PNG・WebP・HEICに一括変換できる無料オンラインツール">
+<meta property="og:description" content="ブラウザだけでJPEG・PNG・WebPに変換できる無料オンラインツール。iPhoneのHEIC画像にも対応。">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
 <meta property="og:url" content="https://brokkorori.github.io/image-convert/">
+
+<!-- ★ HEIC対応ライブラリ -->
+<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
 
 <style>
     body {
@@ -96,11 +99,11 @@
 </head>
 <body>
 
-<h1>画像変換ツール（JPEG / PNG / WebP）</h1>
+<h1>画像変換ツール（JPEG / PNG / WebP / HEIC対応）</h1>
 
 <p style="text-align:center;color:#555;">
 この画像変換ツールは、ブラウザだけで JPEG・PNG・WebP に変換できる無料オンラインサービスです。
-複数画像の一括変換に対応し、ドラッグ＆ドロップするだけで簡単に使えます。インストール不要でスマホでも利用できます。
+iPhoneのHEIC画像にも対応し、複数画像の一括変換が可能。ドラッグ＆ドロップするだけで簡単に使えます。
 </p>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
@@ -139,20 +142,41 @@ dropZone.addEventListener("dragleave", () => {
     dropZone.style.background = "#eef5ff";
 });
 
-dropZone.addEventListener("drop", (e) => {
+dropZone.addEventListener("drop", async (e) => {
     e.preventDefault();
     dropZone.style.background = "#eef5ff";
-    addFiles([...e.dataTransfer.files]);
+    await addFiles([...e.dataTransfer.files]);
 });
 
 // ファイル選択
-document.getElementById("fileInput").addEventListener("change", (e) => {
-    addFiles([...e.target.files]);
+document.getElementById("fileInput").addEventListener("change", async (e) => {
+    await addFiles([...e.target.files]);
 });
 
-// ファイル追加
-function addFiles(files) {
-    selectedFiles = selectedFiles.concat(files);
+// ★ HEIC対応を含むファイル追加処理
+async function addFiles(files) {
+    for (const file of files) {
+        if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+            try {
+                const convertedBlob = await heic2any({
+                    blob: file,
+                    toType: "image/jpeg",
+                    quality: 0.9
+                });
+
+                const newFile = new File([convertedBlob], file.name.replace(/\.heic$/i, ".jpg"), {
+                    type: "image/jpeg"
+                });
+
+                selectedFiles.push(newFile);
+            } catch (err) {
+                alert("HEIC画像の変換に失敗しました");
+            }
+        } else {
+            selectedFiles.push(file);
+        }
+    }
+
     showThumbnails();
 }
 

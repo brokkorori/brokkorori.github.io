@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3P9TPTXJK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-M3P9TPTXJK');
+    </script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image Compression Tool｜Compress JPEG, PNG, WebP Online Without Losing Quality</title>
+
+<meta name="description" content="Free online tool to compress JPEG, PNG, and WebP images without losing quality. Supports drag & drop and batch compression. Works on smartphones and requires no installation.">
+
+<meta name="keywords" content="image compression, compress JPEG, compress PNG, compress WebP, reduce file size, image optimization, free tool">
+
+<meta property="og:title" content="Image Compression Tool｜Compress JPEG, PNG, WebP Online Without Losing Quality">
+<meta property="og:description" content="Compress JPEG, PNG, and WebP images directly in your browser. Supports batch compression and drag & drop.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
+<meta property="og:url" content="https://brokkorori.github.io/en/compress/">
+
+<style>
+    body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+        background: #fff;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    #dropZone {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px;
+        border: 2px dashed #88a;
+        background: #eef5ff;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 20px;
+        transition: 0.2s;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    .thumb {
+        width: 120px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .thumb img {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 20px;
+        width: 100%;
+    }
+    button:hover {
+        background: #005fcc;
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        #dropZone {
+            min-height: 150px;
+            padding: 10px;
+        }
+        .thumb {
+            width: 90px;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        button {
+            font-size: 20px;
+            padding: 16px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<h1>Image Compression Tool (JPEG / PNG / WebP)</h1>
+
+<p style="text-align:center;color:#555;">
+This image compression tool allows you to reduce the file size of JPEG, PNG, and WebP images directly in your browser.  
+It maintains high quality and supports batch compression.  
+No installation required — simply drag & drop your images.
+</p>
+
+<div id="dropZone">Drag & drop images here</div>
+
+<br>
+<input type="file" id="fileInput" multiple><br><br>
+
+<label>Compression Quality: <span id="qualityValue">0.8</span></label>
+<input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.8">
+
+<button onclick="compressImages()">Compress Images (Batch Supported)</button>
+
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">
+    Reset Images
+</button>
+
+<p style="margin-top:30px; text-align:center;">
+    <a href="/en/">Back to Top Page</a>
+</p>
+
+<script>
+let selectedFiles = [];
+
+const dropZone = document.getElementById("dropZone");
+
+dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#ddeaff";
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.style.background = "#eef5ff";
+});
+
+dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#eef5ff";
+    addFiles([...e.dataTransfer.files]);
+});
+
+document.getElementById("fileInput").addEventListener("change", (e) => {
+    addFiles([...e.target.files]);
+});
+
+function addFiles(files) {
+    selectedFiles = selectedFiles.concat(files);
+    showThumbnails();
+}
+
+function showThumbnails() {
+    dropZone.innerHTML = "";
+    selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const div = document.createElement("div");
+            div.className = "thumb";
+            div.innerHTML = `
+                <img src="${e.target.result}">
+                <div>${file.name}</div>
+            `;
+            dropZone.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+document.getElementById("quality").addEventListener("input", (e) => {
+    document.getElementById("qualityValue").innerText = e.target.value;
+});
+
+function compressImages() {
+    if (selectedFiles.length === 0) return alert("Please select images");
+
+    const quality = parseFloat(document.getElementById("quality").value);
+
+    selectedFiles.forEach((file, index) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const baseName = file.name.replace(/\.[^/.]+$/, "");
+                download(url, `${baseName}_compressed_${index}.jpg`);
+            }, "image/jpeg", quality);
+        };
+        img.src = URL.createObjectURL(file);
+    });
+
+    alert("Compression completed!");
+}
+
+function download(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+}
+
+function resetImages() {
+    selectedFiles = [];
+    dropZone.innerHTML = "Drag & drop images here";
+    document.getElementById("fileInput").value = "";
+}
+</script>
+
+</body>
+</html>

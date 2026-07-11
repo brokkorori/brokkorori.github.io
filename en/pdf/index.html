@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3P9TPTXJK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-M3P9TPTXJK');
+    </script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PDF Conversion Tool｜Convert Images → PDF & PDF → Images Online for Free</title>
+
+<meta name="description" content="Free online tool to convert images to PDF or PDF pages to images. Supports drag & drop, batch image-to-PDF conversion, and PDF-to-PNG export. Works on smartphones and requires no installation.">
+
+<meta name="keywords" content="PDF conversion, image to PDF, PDF to image, JPG to PDF, PNG to PDF, PDF to PNG, free tool, online PDF editor">
+
+<meta property="og:title" content="PDF Conversion Tool｜Convert Images → PDF & PDF → Images Online for Free">
+<meta property="og:description" content="Convert images to PDF or PDF pages to images easily with drag & drop.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
+<meta property="og:url" content="https://brokkorori.github.io/en/pdf/">
+
+<style>
+    body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+        background: #fff;
+        color: #333;
+        line-height: 1.8;
+    }
+    h1, h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    #dropZoneImg, #dropZonePdf {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px;
+        border: 2px dashed #88a;
+        background: #eef5ff;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 20px;
+        transition: 0.2s;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    .thumb {
+        width: 120px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .thumb img {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 20px;
+        width: 100%;
+    }
+    button:hover {
+        background: #005fcc;
+    }
+    @media (max-width: 600px) {
+        .thumb { width: 90px; }
+        button { font-size: 20px; padding: 16px; }
+    }
+</style>
+</head>
+<body>
+
+<h1>PDF Conversion Tool (Images → PDF / PDF → Images)</h1>
+
+<p style="text-align:center;color:#555;">
+This PDF conversion tool allows you to convert images to PDF or convert PDF pages to images.  
+Supports batch image-to-PDF conversion and PDF-to-PNG export.  
+Simply drag & drop your files — no installation required, works on smartphones.
+</p>
+
+<!-- Images → PDF -->
+<h2>Images → PDF</h2>
+
+<div id="dropZoneImg">Drag & drop images here</div>
+
+<br>
+<input type="file" id="fileInputImg" multiple><br><br>
+
+<button onclick="convertToPDF()">Convert Images to PDF</button>
+
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">
+    Reset Images
+</button>
+
+<hr style="margin:40px 0;">
+
+<!-- PDF → Images -->
+<h2>PDF → Images</h2>
+
+<div id="dropZonePdf">Drag & drop PDF here</div>
+
+<br>
+<input type="file" id="fileInputPdf" accept="application/pdf"><br><br>
+
+<button onclick="convertPdfToImages()">Convert PDF to Images</button>
+
+<button onclick="resetPdf()" style="background:#888;margin-top:10px;">
+    Reset PDF
+</button>
+
+<p style="margin-top:40px; text-align:center;">
+    <a href="/en/">Back to Top Page</a>
+</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+<script>
+let selectedImages = [];
+let selectedPdf = null;
+
+/* ------------------------------
+   Images → PDF
+------------------------------ */
+
+const dropZoneImg = document.getElementById("dropZoneImg");
+
+dropZoneImg.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropZoneImg.style.background = "#ddeaff";
+});
+dropZoneImg.addEventListener("dragleave", () => {
+    dropZoneImg.style.background = "#eef5ff";
+});
+dropZoneImg.addEventListener("drop", e => {
+    e.preventDefault();
+    dropZoneImg.style.background = "#eef5ff";
+    addImages([...e.dataTransfer.files]);
+});
+
+document.getElementById("fileInputImg").addEventListener("change", e => {
+    addImages([...e.target.files]);
+});
+
+function addImages(files) {
+    selectedImages = selectedImages.concat(files);
+    showImageThumbs();
+}
+
+function showImageThumbs() {
+    dropZoneImg.innerHTML = "";
+    selectedImages.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const div = document.createElement("div");
+            div.className = "thumb";
+            div.innerHTML = `
+                <img src="${e.target.result}">
+                <div>${file.name}</div>
+            `;
+            dropZoneImg.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function convertToPDF() {
+    if (selectedImages.length === 0) return alert("Please select images");
+
+    const pdf = new jspdf.jsPDF();
+
+    selectedImages.forEach((file, index) => {
+        const img = new Image();
+        img.onload = () => {
+            const w = pdf.internal.pageSize.getWidth();
+            const h = pdf.internal.pageSize.getHeight();
+            pdf.addImage(img, "JPEG", 0, 0, w, h);
+            if (index < selectedImages.length - 1) pdf.addPage();
+            if (index === selectedImages.length - 1) {
+                pdf.save("converted.pdf");
+                alert("Image → PDF conversion completed!");
+            }
+        };
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+function resetImages() {
+    selectedImages = [];
+    dropZoneImg.innerHTML = "Drag & drop images here";
+    document.getElementById("fileInputImg").value = "";
+}
+
+/* ------------------------------
+   PDF → Images
+------------------------------ */
+
+const dropZonePdf = document.getElementById("dropZonePdf");
+
+dropZonePdf.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropZonePdf.style.background = "#ddeaff";
+});
+dropZonePdf.addEventListener("dragleave", () => {
+    dropZonePdf.style.background = "#eef5ff";
+});
+dropZonePdf.addEventListener("drop", e => {
+    e.preventDefault();
+    dropZonePdf.style.background = "#eef5ff";
+    addPdf(e.dataTransfer.files[0]);
+});
+
+document.getElementById("fileInputPdf").addEventListener("change", e => {
+    addPdf(e.target.files[0]);
+});
+
+function addPdf(file) {
+    if (!file || file.type !== "application/pdf") {
+        alert("Please select a PDF file");
+        return;
+    }
+    selectedPdf = file;
+    dropZonePdf.innerHTML = `<div>${file.name}</div>`;
+}
+
+async function convertPdfToImages() {
+    if (!selectedPdf) return alert("Please select a PDF");
+
+    const pdfData = await selectedPdf.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 2 });
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({ canvasContext: ctx, viewport }).promise;
+
+        canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            download(url, `page_${i}.png`);
+        });
+    }
+
+    alert("PDF → Images conversion completed!");
+}
+
+function resetPdf() {
+    selectedPdf = null;
+    dropZonePdf.innerHTML = "Drag & drop PDF here";
+    document.getElementById("fileInputPdf").value = "";
+}
+
+function download(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+}
+</script>
+
+</body>
+</html>

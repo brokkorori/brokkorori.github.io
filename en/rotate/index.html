@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image Rotation Tool｜Rotate Images 90°, 180°, 270° Online for Free</title>
+
+<meta name="description" content="Free online tool to rotate images 90°, 180°, or 270°. Supports drag & drop and batch rotation. Works on smartphones and requires no installation.">
+
+<meta name="keywords" content="image rotation, rotate image, 90 degree, 180 degree, 270 degree, free tool, online image editor">
+
+<meta property="og:title" content="Image Rotation Tool｜Rotate Images 90°, 180°, 270° Online for Free">
+<meta property="og:description" content="Rotate images directly in your browser. Supports batch rotation and drag & drop.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
+<meta property="og:url" content="https://brokkorori.github.io/en/rotate/">
+
+<style>
+    body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+        background: #fff;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    #dropZone {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px;
+        border: 2px dashed #88a;
+        background: #eef5ff;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 20px;
+        transition: 0.2s;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    .thumb {
+        width: 120px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .thumb img {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 20px;
+        width: 100%;
+    }
+    button:hover {
+        background: #005fcc;
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        #dropZone {
+            min-height: 150px;
+            padding: 10px;
+        }
+        .thumb {
+            width: 90px;
+        }
+        select {
+            width: 100%;
+            font-size: 18px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+        button {
+            font-size: 20px;
+            padding: 16px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<h1>Image Rotation Tool (90°, 180°, 270°)</h1>
+
+<p style="text-align:center;color:#555;">
+This image rotation tool allows you to rotate images 90°, 180°, or 270° directly in your browser.  
+It supports batch rotation and drag & drop for easy use.  
+No installation required, and works on smartphones.
+</p>
+
+<div id="dropZone">Drag & drop images here</div>
+
+<br>
+<input type="file" id="fileInput" multiple><br><br>
+
+<select id="rotate">
+    <option value="90">Rotate 90°</option>
+    <option value="180">Rotate 180°</option>
+    <option value="270">Rotate 270°</option>
+</select>
+
+<button onclick="rotateImages()">Rotate Images (Batch Supported)</button>
+
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">
+    Reset Images
+</button>
+
+<p style="margin-top:30px; text-align:center;">
+    <a href="/en/">Back to Top Page</a>
+</p>
+
+<script>
+let selectedFiles = [];
+
+const dropZone = document.getElementById("dropZone");
+
+dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#ddeaff";
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.style.background = "#eef5ff";
+});
+
+dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#eef5ff";
+    addFiles([...e.dataTransfer.files]);
+});
+
+document.getElementById("fileInput").addEventListener("change", (e) => {
+    addFiles([...e.target.files]);
+});
+
+function addFiles(files) {
+    selectedFiles = selectedFiles.concat(files);
+    showThumbnails();
+}
+
+function showThumbnails() {
+    dropZone.innerHTML = "";
+    selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const div = document.createElement("div");
+            div.className = "thumb";
+            div.innerHTML = `
+                <img src="${e.target.result}">
+                <div>${file.name}</div>
+            `;
+            dropZone.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function rotateImages() {
+    if (selectedFiles.length === 0) return alert("Please select images");
+
+    const angle = parseInt(document.getElementById("rotate").value);
+
+    selectedFiles.forEach((file, index) => {
+        const img = new Image();
+        img.onload = () => {
+            let canvas = document.createElement("canvas");
+            let ctx = canvas.getContext("2d");
+
+            if (angle === 90 || angle === 270) {
+                canvas.width = img.height;
+                canvas.height = img.width;
+            } else {
+                canvas.width = img.width;
+                canvas.height = img.height;
+            }
+
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(angle * Math.PI / 180);
+            ctx.drawImage(img, -img.width / 2, -img.height / 2);
+
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const baseName = file.name.replace(/\.[^/.]+$/, "");
+                download(url, `${baseName}_rotated_${angle}_${index}.png`);
+            });
+        };
+        img.src = URL.createObjectURL(file);
+    });
+
+    alert("Rotation completed!");
+}
+
+function download(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+}
+
+function resetImages() {
+    selectedFiles = [];
+    dropZone.innerHTML = "Drag & drop images here";
+    document.getElementById("fileInput").value = "";
+}
+</script>
+
+</body>
+</html>

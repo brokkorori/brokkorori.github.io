@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 
     <!-- Google tag (gtag.js) -->
@@ -14,220 +14,114 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>画像回転ツール｜90°・180°・270°に無料で簡単に回転できるオンライン編集</title>
+<title>Online Image Editing Tools｜Convert, Resize, Compress, Crop, Rotate, HEIC Support</title>
 
-<meta name="description" content="画像を90°・180°・270°に回転できる無料オンライン画像編集ツール。ドラッグ＆ドロップ対応で複数画像の一括回転にも対応。インストール不要でスマホでも利用できます。">
+<meta name="description" content="Free online tools to edit images directly in your browser. Convert JPEG/PNG/WebP/HEIC, resize, compress, crop, rotate, and convert images to/from PDF. No installation required.">
 
-<meta name="keywords" content="画像回転, 画像編集, 90度回転, 180度回転, 270度回転, 無料ツール, オンライン画像編集">
+<meta name="keywords" content="image editing, HEIC converter, image convert, resize, compress, crop, rotate, PDF convert, free tools">
 
-<meta property="og:title" content="画像回転ツール｜90°・180°・270°に無料で簡単に回転できるオンライン編集">
-<meta property="og:description" content="ブラウザだけで画像を90°・180°・270°に回転できる無料オンラインツール。複数画像の一括回転にも対応。">
+<meta property="og:title" content="Online Image Editing Tools｜Convert, Resize, Compress, Crop, Rotate, HEIC Support">
+<meta property="og:description" content="Free browser-based image editing tools. Convert JPEG/PNG/WebP/HEIC, resize, compress, crop, rotate, and PDF conversion.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/rotate/">
+<meta property="og:url" content="https://brokkorori.github.io/en/">
 
 <style>
     body {
         font-family: sans-serif;
-        padding: 20px;
-        max-width: 900px;
+        max-width: 1100px;
         margin: auto;
+        padding: 40px 20px;
         background: #fff;
         color: #333;
     }
     h1 {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
-    #dropZone {
-        width: 100%;
-        min-height: 200px;
-        padding: 20px;
-        border: 2px dashed #88a;
-        background: #eef5ff;
-        border-radius: 10px;
+    p {
         text-align: center;
-        margin-top: 20px;
-        transition: 0.2s;
+        color: #555;
+        margin-bottom: 40px;
+    }
+    ul {
+        list-style: none;
+        padding-left: 0;
+        max-width: 700px;
+        margin: auto;
+    }
+    li {
+        margin: 22px 0;
+        font-size: 22px;
         display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: flex-start;
-        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
     }
-    .thumb {
-        width: 120px;
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .desc {
+        font-size: 14px;
+        color: #666;
+        margin-left: 44px;
+    }
+    footer {
+        margin-top: 50px;
         text-align: center;
-        font-size: 12px;
-    }
-    .thumb img {
-        width: 100%;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
-    button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 14px 20px;
-        border-radius: 8px;
-        font-size: 18px;
-        cursor: pointer;
-        margin-top: 20px;
-        width: 100%;
-    }
-    button:hover {
-        background: #005fcc;
-    }
-
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        select {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
+        font-size: 14px;
+        color: #777;
     }
 </style>
 </head>
 <body>
 
-<h1>画像回転ツール（90°・180°・270°）</h1>
+<h1>Online Image Editing Tools (HEIC Supported)</h1>
+<p>Free tools to convert, resize, compress, crop, and rotate images directly in your browser. HEIC (iPhone images) supported.</p>
 
-<p style="text-align:center;color:#555;">
-この画像回転ツールは、ブラウザだけで画像を 90°・180°・270° に回転できる無料オンラインサービスです。
-複数画像の一括回転に対応し、ドラッグ＆ドロップするだけで簡単に使えます。インストール不要でスマホでも利用できます。
+<!-- 日本語ページへのリンク -->
+<p style="text-align:center; margin-bottom:30px;">
+    <a href="/">日本語ページはこちら</a>
 </p>
 
-<div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
-
-<br>
-<input type="file" id="fileInput" multiple><br><br>
-
-<select id="rotate">
-    <option value="90">90° 回転</option>
-    <option value="180">180° 回転</option>
-    <option value="270">270° 回転</option>
-</select>
-
-<button onclick="rotateImages()">画像を回転する（複数対応）</button>
-
-<button onclick="resetImages()" style="background:#888;margin-top:10px;">
-    画像をリセットする
-</button>
-
-<p style="margin-top:30px; text-align:center;">
-    <a href="/">トップページに戻る</a>
+<section>
+<h2 style="text-align:center;">What You Can Do on This Site</h2>
+<p>
+This site provides free online tools to edit images directly in your browser.  
+You can convert images (JPEG / PNG / WebP / HEIC), resize, compress, crop, rotate, and convert images to/from PDF.  
+No installation required — simply drag & drop your files.
 </p>
+</section>
 
-<script>
-let selectedFiles = [];
+<ul>
 
-const dropZone = document.getElementById("dropZone");
+    <li>🔄 <a href="/en/image-convert/">Image Conversion (JPEG / PNG / WebP / HEIC)</a></li>
+    <div class="desc">Supports HEIC images from iPhone. Batch conversion available.</div>
 
-dropZone.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropZone.style.background = "#ddeaff";
-});
+    <li>📏 <a href="/en/resize/">Image Resize</a></li>
+    <div class="desc">Resize images while keeping aspect ratio.</div>
 
-dropZone.addEventListener("dragleave", () => {
-    dropZone.style.background = "#eef5ff";
-});
+    <li>📦 <a href="/en/compress/">Image Compression</a></li>
+    <div class="desc">Reduce file size while maintaining quality.</div>
 
-dropZone.addEventListener("drop", (e) => {
-    e.preventDefault();
-    dropZone.style.background = "#eef5ff";
-    addFiles([...e.dataTransfer.files]);
-});
+    <li>✂️ <a href="/en/crop/">Image Cropping</a></li>
+    <div class="desc">Cut out unwanted parts of your images.</div>
 
-document.getElementById("fileInput").addEventListener("change", (e) => {
-    addFiles([...e.target.files]);
-});
+    <li>🔁 <a href="/en/rotate/">Image Rotation</a></li>
+    <div class="desc">Rotate images 90°, 180°, 270°, and more.</div>
 
-function addFiles(files) {
-    selectedFiles = selectedFiles.concat(files);
-    showThumbnails();
-}
+    <li>📄 <a href="/en/pdf/">PDF Conversion (Images → PDF / PDF → Images)</a></li>
+    <div class="desc">Convert images to PDF or extract images from PDF.</div>
 
-function showThumbnails() {
-    dropZone.innerHTML = "";
-    selectedFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const div = document.createElement("div");
-            div.className = "thumb";
-            div.innerHTML = `
-                <img src="${e.target.result}">
-                <div>${file.name}</div>
-            `;
-            dropZone.appendChild(div);
-        };
-        reader.readAsDataURL(file);
-    });
-}
+</ul>
 
-function rotateImages() {
-    if (selectedFiles.length === 0) return alert("画像を選んでください");
-
-    const angle = parseInt(document.getElementById("rotate").value);
-
-    selectedFiles.forEach((file, index) => {
-        const img = new Image();
-        img.onload = () => {
-            let canvas = document.createElement("canvas");
-            let ctx = canvas.getContext("2d");
-
-            if (angle === 90 || angle === 270) {
-                canvas.width = img.height;
-                canvas.height = img.width;
-            } else {
-                canvas.width = img.width;
-                canvas.height = img.height;
-            }
-
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(angle * Math.PI / 180);
-            ctx.drawImage(img, -img.width / 2, -img.height / 2);
-
-            canvas.toBlob(blob => {
-                const url = URL.createObjectURL(blob);
-                const baseName = file.name.replace(/\.[^/.]+$/, "");
-                download(url, `${baseName}_rotated_${angle}_${index}.png`);
-            });
-        };
-        img.src = URL.createObjectURL(file);
-    });
-
-    alert("回転が完了しました！");
-}
-
-function download(url, filename) {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-}
-
-function resetImages() {
-    selectedFiles = [];
-    dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
-    document.getElementById("fileInput").value = "";
-}
-</script>
+<footer>
+    <a href="/en/privacy/">Privacy Policy</a> |
+    <a href="/en/contact/">Contact</a>
+</footer>
 
 </body>
 </html>

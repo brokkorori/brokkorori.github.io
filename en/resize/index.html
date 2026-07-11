@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3P9TPTXJK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-M3P9TPTXJK');
+    </script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image Resize Tool｜Free Online Tool to Resize Images While Keeping Aspect Ratio</title>
+
+<meta name="description" content="Free online image resize tool to easily change image size. Supports aspect ratio keeping, pixel-based resizing, and batch processing. Drag & drop to use instantly.">
+
+<meta name="keywords" content="image resize, resize tool, aspect ratio, image editing, free tool, online image editor">
+
+<meta property="og:title" content="Image Resize Tool｜Free Online Tool to Resize Images While Keeping Aspect Ratio">
+<meta property="og:description" content="Resize images directly in your browser. Supports aspect ratio keeping and pixel-based resizing.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
+<meta property="og:url" content="https://brokkorori.github.io/en/resize/">
+
+<style>
+    body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+        background: #fff;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    #dropZone {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px;
+        border: 2px dashed #88a;
+        background: #eef5ff;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 20px;
+        transition: 0.2s;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    .thumb {
+        width: 120px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .thumb img {
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 20px;
+        width: 100%;
+    }
+    button:hover {
+        background: #005fcc;
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        #dropZone {
+            min-height: 150px;
+            padding: 10px;
+        }
+        .thumb {
+            width: 90px;
+        }
+        input[type="number"] {
+            width: 100%;
+            font-size: 18px;
+            padding: 12px;
+            margin-top: 5px;
+        }
+        label {
+            font-size: 18px;
+        }
+        button {
+            font-size: 20px;
+            padding: 16px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<h1>Image Resize Tool (Aspect Ratio Supported)</h1>
+
+<p style="text-align:center;color:#555;">
+This image resize tool allows you to change image size directly in your browser.  
+Supports aspect ratio keeping, pixel-based resizing, and batch processing.  
+Simply drag & drop your images — no installation required.
+</p>
+
+<div id="dropZone">Drag & drop images here</div>
+
+<br>
+<input type="file" id="fileInput" multiple><br><br>
+
+Width (px): <input type="number" id="resizeWidth" value="800">
+Height (px): <input type="number" id="resizeHeight" value="600">
+
+<br><br>
+
+<label>
+    <input type="checkbox" id="keepRatio" checked>
+    Keep aspect ratio
+</label>
+
+<button onclick="resizeImages()">Resize Images (Batch Supported)</button>
+
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">
+    Reset Images
+</button>
+
+<p style="margin-top:30px; text-align:center;">
+    <a href="/en/">Back to Top Page</a>
+</p>
+
+<script>
+let selectedFiles = [];
+
+// Drop zone
+const dropZone = document.getElementById("dropZone");
+
+dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#ddeaff";
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.style.background = "#eef5ff";
+});
+
+dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "#eef5ff";
+    addFiles([...e.dataTransfer.files]);
+});
+
+// File input
+document.getElementById("fileInput").addEventListener("change", (e) => {
+    addFiles([...e.target.files]);
+});
+
+// Add files
+function addFiles(files) {
+    selectedFiles = selectedFiles.concat(files);
+    showThumbnails();
+}
+
+// Show thumbnails
+function showThumbnails() {
+    dropZone.innerHTML = "";
+    selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const div = document.createElement("div");
+            div.className = "thumb";
+            div.innerHTML = `
+                <img src="${e.target.result}">
+                <div>${file.name}</div>
+            `;
+            dropZone.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// Resize images
+function resizeImages() {
+    if (selectedFiles.length === 0) return alert("Please select images");
+
+    const w = parseInt(document.getElementById("resizeWidth").value);
+    const h = parseInt(document.getElementById("resizeHeight").value);
+    const keepRatio = document.getElementById("keepRatio").checked;
+
+    selectedFiles.forEach((file, index) => {
+        const img = new Image();
+        img.onload = () => {
+            let newW = w;
+            let newH = h;
+
+            if (keepRatio) {
+                const ratio = img.height / img.width;
+                newH = Math.round(newW * ratio);
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = newW;
+            canvas.height = newH;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, newW, newH);
+
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const baseName = file.name.replace(/\.[^/.]+$/, "");
+                download(url, `${baseName}_resized_${index}.png`);
+            });
+        };
+        img.src = URL.createObjectURL(file);
+    });
+
+    alert("Resize completed!");
+}
+
+// Download
+function download(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+}
+
+// Reset
+function resetImages() {
+    selectedFiles = [];
+    dropZone.innerHTML = "Drag & drop images here";
+    document.getElementById("fileInput").value = "";
+}
+</script>
+
+</body>
+</html>

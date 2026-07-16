@@ -14,17 +14,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>画像トリミングツール｜切り抜き・クロップを無料で簡単にできるオンライン編集</title>
+<title>画像トリミングツール｜ドラッグで簡単に切り抜きできる無料オンライン編集</title>
 
-<meta name="description" content="画像の不要な部分を切り抜きできる無料オンライン画像トリミングツール。JPEG・PNG・WebPに対応し、ドラッグ＆ドロップで簡単にクロップ可能。開始位置や幅・高さを指定して細かい調整もできます。">
+<meta name="description" content="画像の不要な部分をドラッグで簡単に切り抜きできる無料オンライン画像トリミングツール。JPEG・PNG・WebP対応。ブラウザ内で処理されるため安全で高速。">
 
 <meta name="keywords" content="画像トリミング, 画像切り抜き, クロップ, トリミングツール, 無料画像編集, オンライン画像編集">
-
-<meta property="og:title" content="画像トリミングツール｜切り抜き・クロップを無料で簡単にできるオンライン編集">
-<meta property="og:description" content="画像の不要な部分を切り抜きできる無料オンライン画像トリミングツール。開始位置や幅・高さを指定して細かい調整も可能。">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/crop/">
 
 <style>
     body {
@@ -49,64 +43,23 @@
         text-align: center;
         margin-top: 20px;
         transition: 0.2s;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: flex-start;
-        justify-content: flex-start;
     }
-    .thumb {
-        width: 120px;
-        text-align: center;
-        font-size: 12px;
-    }
-    .thumb img {
-        width: 100%;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
-
-    .inputBox {
-        background: #f7f7f7;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
+    #canvasWrapper {
+        position: relative;
         margin-top: 20px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-    .inputItem {
-        display: flex;
-        flex-direction: column;
-        width: 200px;
-    }
-    .inputItem label {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    .inputItem input {
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 6px;
-        border: 1px solid #aaa;
-    }
-
-    #previewZone {
-        margin-top: 30px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-    .previewItem {
         text-align: center;
     }
-    .previewItem img {
-        max-width: 200px;
+    #mainCanvas {
+        max-width: 100%;
         border: 1px solid #ccc;
         border-radius: 6px;
     }
-
+    #cropArea {
+        position: absolute;
+        border: 2px dashed red;
+        background: rgba(255,0,0,0.2);
+        pointer-events: none;
+    }
     button {
         background: #007bff;
         color: white;
@@ -121,49 +74,35 @@
     button:hover {
         background: #005fcc;
     }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
 </style>
 </head>
 <body>
 
-<h1>画像トリミングツール（切り抜き・クロップ）</h1>
+<h1>画像トリミングツール（ドラッグで切り抜き）</h1>
 
 <p style="text-align:center;color:#555;">
-この画像トリミングツールは、ブラウザだけで画像の不要な部分を切り抜きできる無料オンラインサービスです。
-開始位置（x・y）や幅・高さを指定して、細かいクロップ調整が可能。JPEG・PNG・WebP に対応し、ドラッグ＆ドロップするだけで簡単に使えます。
+このツールは、画像の不要な部分をドラッグ操作で簡単に切り抜きできる無料オンラインサービスです。  
+画像はすべてブラウザ内で処理され、外部にアップロードされないため安全に利用できます。
 </p>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
-
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput">
 
-<div class="inputBox">
-    <div class="inputItem">
-        <label>切り取り開始位置（x）</label>
-        <input type="number" id="cropX" value="0">
-    </div>
-
-    <div class="inputItem">
-        <label>切り取り開始位置（y）</label>
-        <input type="number" id="cropY" value="0">
-    </div>
-
-    <div class="inputItem">
-        <label>切り取り幅（w）</label>
-        <input type="number" id="cropW" value="300">
-    </div>
-
-    <div class="inputItem">
-        <label>切り取り高さ（h）</label>
-        <input type="number" id="cropH" value="300">
-    </div>
+<div id="canvasWrapper">
+    <canvas id="mainCanvas"></canvas>
+    <div id="cropArea"></div>
 </div>
 
-<button onclick="resetImages()" style="background:#888;margin-top:10px;">
-    画像をリセットする
-</button>
+<button id="cropButton">選択範囲をトリミングする</button>
 
-<h2 style="margin-top:30px;">トリミング結果プレビュー</h2>
+<h2 style="margin-top:30px;">トリミング結果</h2>
 <div id="previewZone"></div>
 
 <p style="margin-top:30px; text-align:center;">
@@ -171,97 +110,84 @@
 </p>
 
 <script>
-let selectedFiles = [];
+let img = new Image();
+let canvas = document.getElementById("mainCanvas");
+let ctx = canvas.getContext("2d");
 
-const dropZone = document.getElementById("dropZone");
-const previewZone = document.getElementById("previewZone");
+let cropArea = document.getElementById("cropArea");
+let startX, startY, endX, endY;
+let isDragging = false;
 
-dropZone.addEventListener("dragover", (e) => {
+document.getElementById("dropZone").addEventListener("dragover", e => {
     e.preventDefault();
-    dropZone.style.background = "#ddeaff";
 });
-dropZone.addEventListener("dragleave", () => {
-    dropZone.style.background = "#eef5ff";
-});
-dropZone.addEventListener("drop", (e) => {
+document.getElementById("dropZone").addEventListener("drop", e => {
     e.preventDefault();
-    dropZone.style.background = "#eef5ff";
-    addFiles([...e.dataTransfer.files]);
+    loadImage(e.dataTransfer.files[0]);
+});
+document.getElementById("fileInput").addEventListener("change", e => {
+    loadImage(e.target.files[0]);
 });
 
-document.getElementById("fileInput").addEventListener("change", (e) => {
-    addFiles([...e.target.files]);
+function loadImage(file) {
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+    };
+}
+
+canvas.addEventListener("mousedown", e => {
+    isDragging = true;
+    const rect = canvas.getBoundingClientRect();
+    startX = e.clientX - rect.left;
+    startY = e.clientY - rect.top;
 });
 
-function addFiles(files) {
-    selectedFiles = selectedFiles.concat(files);
-    showThumbnails();
-    cropImages();
-}
+canvas.addEventListener("mousemove", e => {
+    if (!isDragging) return;
+    const rect = canvas.getBoundingClientRect();
+    endX = e.clientX - rect.left;
+    endY = e.clientY - rect.top;
 
-function showThumbnails() {
-    dropZone.innerHTML = "";
-    selectedFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const div = document.createElement("div");
-            div.className = "thumb";
-            div.innerHTML = `
-                <img src="${e.target.result}">
-                <div>${file.name}</div>
-            `;
-            dropZone.appendChild(div);
-        };
-        reader.readAsDataURL(file);
+    const x = Math.min(startX, endX);
+    const y = Math.min(startY, endY);
+    const w = Math.abs(startX - endX);
+    const h = Math.abs(startY - endY);
+
+    cropArea.style.left = x + "px";
+    cropArea.style.top = y + "px";
+    cropArea.style.width = w + "px";
+    cropArea.style.height = h + "px";
+});
+
+canvas.addEventListener("mouseup", () => {
+    isDragging = false;
+});
+
+document.getElementById("cropButton").addEventListener("click", () => {
+    const rect = cropArea.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+
+    const x = rect.left - canvasRect.left;
+    const y = rect.top - canvasRect.top;
+    const w = rect.width;
+    const h = rect.height;
+
+    const cropCanvas = document.createElement("canvas");
+    cropCanvas.width = w;
+    cropCanvas.height = h;
+    const cropCtx = cropCanvas.getContext("2d");
+
+    cropCtx.drawImage(img, x, y, w, h, 0, 0, w, h);
+
+    cropCanvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        document.getElementById("previewZone").innerHTML =
+            `<img src="${url}">`;
     });
-}
-
-function cropImages() {
-    if (selectedFiles.length === 0) return;
-
-    previewZone.innerHTML = "";
-
-    const cropX = parseInt(document.getElementById("cropX").value);
-    const cropY = parseInt(document.getElementById("cropY").value);
-    const cropW = parseInt(document.getElementById("cropW").value);
-    const cropH = parseInt(document.getElementById("cropH").value);
-
-    selectedFiles.forEach((file, index) => {
-        const img = new Image();
-        img.onload = () => {
-            const canvas = document.createElement("canvas");
-            canvas.width = cropW;
-            canvas.height = cropH;
-            const ctx = canvas.getContext("2d");
-
-            ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
-
-            canvas.toBlob(blob => {
-                const url = URL.createObjectURL(blob);
-                const baseName = file.name.replace(/\.[^/.]+$/, "");
-
-                const previewDiv = document.createElement("div");
-                previewDiv.className = "previewItem";
-                previewDiv.innerHTML = `
-                    <img src="${url}">
-                    <div>${baseName}_cropped_${index}.png</div>
-                `;
-                previewZone.appendChild(previewDiv);
-            });
-        };
-        img.src = URL.createObjectURL(file);
-    });
-}
-
-document.querySelectorAll("#cropX, #cropY, #cropW, #cropH")
-    .forEach(input => input.addEventListener("input", cropImages));
-
-function resetImages() {
-    selectedFiles = [];
-    dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
-    previewZone.innerHTML = "";
-    document.getElementById("fileInput").value = "";
-}
+});
 </script>
 
 </body>

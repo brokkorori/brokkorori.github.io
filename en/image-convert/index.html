@@ -14,14 +14,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Image Conversion Tool｜Convert JPEG, PNG, WebP, HEIC Online for Free</title>
+<title>Image Conversion Tool｜Convert JPEG, PNG, WebP, HEIC Online</title>
 
-<meta name="description" content="Free online tool to convert images to JPEG, PNG, or WebP with drag & drop. Supports iPhone HEIC images and batch conversion. No installation required and works on smartphones.">
+<meta name="description" content="Free online tool to convert images to JPEG, PNG, or WebP. Supports iPhone HEIC images, batch conversion, and secure local processing. Drag & drop to start instantly.">
 
 <meta name="keywords" content="image conversion, convert JPEG, convert PNG, convert WebP, convert HEIC, iPhone HEIC, batch conversion, free tool">
 
-<meta property="og:title" content="Image Conversion Tool｜Convert JPEG, PNG, WebP, HEIC Online for Free">
-<meta property="og:description" content="Convert JPEG, PNG, WebP, and HEIC images directly in your browser. Supports batch conversion.">
+<meta property="og:title" content="Image Conversion Tool｜Convert JPEG, PNG, WebP, HEIC Online">
+<meta property="og:description" content="Convert JPEG, PNG, WebP, and HEIC images directly in your browser. Safe local processing and batch conversion supported.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
 <meta property="og:url" content="https://brokkorori.github.io/en/image-convert/">
@@ -68,6 +68,14 @@
         border-radius: 6px;
         border: 1px solid #ccc;
     }
+    select {
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        margin-top: 20px;
+        border-radius: 8px;
+        border: 1px solid #aaa;
+    }
     button {
         background: #007bff;
         color: white;
@@ -82,28 +90,11 @@
     button:hover {
         background: #005fcc;
     }
-
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        select {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
 </style>
 </head>
@@ -111,16 +102,24 @@
 
 <h1>Image Conversion Tool (JPEG / PNG / WebP / HEIC)</h1>
 
-<p style="text-align:center;color:#555;">
-This image conversion tool allows you to convert images to JPEG, PNG, or WebP directly in your browser.  
-It also supports iPhone HEIC images and batch conversion.  
-Simply drag & drop your images — no installation required.
+<p style="text-align:center;color:#555; line-height:1.7;">
+This tool allows you to convert images to JPEG, PNG, or WebP directly in your browser.  
+<strong>All processing is done locally on your device — your images are never uploaded.</strong>  
+iPhone HEIC images are fully supported, and batch conversion is available.  
+Simply drag & drop your files to begin.
 </p>
+
+<h2>About Each Format</h2>
+<ul style="line-height:1.8;">
+    <li><strong>JPEG:</strong> Lightweight and ideal for photos.</li>
+    <li><strong>PNG:</strong> Supports transparency. Great for logos and illustrations.</li>
+    <li><strong>WebP:</strong> High compression and small file size. Perfect for websites.</li>
+</ul>
 
 <div id="dropZone">Drag & drop images here</div>
 
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput" multiple>
 
 <select id="format">
     <option value="image/jpeg">Convert to JPEG</option>
@@ -133,6 +132,9 @@ Simply drag & drop your images — no installation required.
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     Reset Images
 </button>
+
+<h2 style="margin-top:30px;">Conversion Preview</h2>
+<div id="previewZone"></div>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/en/">Back to Top Page</a>
@@ -214,6 +216,8 @@ function convertImages() {
     if (selectedFiles.length === 0) return alert("Please select images");
 
     const format = document.getElementById("format").value;
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
 
     selectedFiles.forEach((file, index) => {
         const img = new Image();
@@ -228,7 +232,14 @@ function convertImages() {
                 const url = URL.createObjectURL(blob);
                 const baseName = file.name.replace(/\.[^/.]+$/, "");
                 const ext = format.split("/")[1];
-                download(url, `${baseName}_converted_${index}.${ext}`);
+
+                // Preview
+                const previewImg = document.createElement("img");
+                previewImg.src = url;
+                previewZone.appendChild(previewImg);
+
+                // Download
+                download(url, `${baseName}_converted.${ext}`);
             }, format);
         };
         img.src = URL.createObjectURL(file);
@@ -250,6 +261,7 @@ function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "Drag & drop images here";
     document.getElementById("fileInput").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 </script>
 

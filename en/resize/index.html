@@ -16,9 +16,9 @@
 
 <title>Image Resize Tool｜Free Online Tool to Resize Images While Keeping Aspect Ratio</title>
 
-<meta name="description" content="Free online image resize tool to easily change image size. Supports aspect ratio keeping, pixel-based resizing, and batch processing. Drag & drop to use instantly.">
+<meta name="description" content="Free online image resize tool to change image size directly in your browser. Supports aspect ratio keeping, pixel-based resizing, and batch processing. All processing is done locally and safely.">
 
-<meta name="keywords" content="image resize, resize tool, aspect ratio, image editing, free tool, online image editor">
+<meta name="keywords" content="image resize, resize tool, aspect ratio, image editing, free tool">
 
 <meta property="og:title" content="Image Resize Tool｜Free Online Tool to Resize Images While Keeping Aspect Ratio">
 <meta property="og:description" content="Resize images directly in your browser. Supports aspect ratio keeping and pixel-based resizing.">
@@ -65,6 +65,19 @@
         border-radius: 6px;
         border: 1px solid #ccc;
     }
+    input[type="number"] {
+        padding: 10px;
+        font-size: 18px;
+        width: 150px;
+        margin: 5px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+    }
+    label {
+        font-size: 18px;
+        margin-top: 10px;
+        display: inline-block;
+    }
     button {
         background: #007bff;
         color: white;
@@ -79,31 +92,11 @@
     button:hover {
         background: #005fcc;
     }
-
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        input[type="number"] {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 5px;
-        }
-        label {
-            font-size: 18px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
 </style>
 </head>
@@ -111,17 +104,27 @@
 
 <h1>Image Resize Tool (Aspect Ratio Supported)</h1>
 
-<p style="text-align:center;color:#555;">
+<p style="text-align:center;color:#555; line-height:1.7;">
 This image resize tool allows you to change image size directly in your browser.  
+<strong>All processing is done locally on your device — your images are never uploaded.</strong>  
 Supports aspect ratio keeping, pixel-based resizing, and batch processing.  
-Simply drag & drop your images — no installation required.
+Simply drag & drop your images to begin.
 </p>
+
+<h2>When to Use Image Resizing</h2>
+<ul style="line-height:1.8;">
+    <li><strong>Reduce image size for blogs or social media</strong></li>
+    <li><strong>Create small thumbnails</strong></li>
+    <li><strong>Make images fit documents or presentations</strong></li>
+    <li><strong>Shrink large smartphone photos</strong></li>
+</ul>
 
 <div id="dropZone">Drag & drop images here</div>
 
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput" multiple>
 
+<h2>Resize Settings</h2>
 Width (px): <input type="number" id="resizeWidth" value="800">
 Height (px): <input type="number" id="resizeHeight" value="600">
 
@@ -129,7 +132,7 @@ Height (px): <input type="number" id="resizeHeight" value="600">
 
 <label>
     <input type="checkbox" id="keepRatio" checked>
-    Keep aspect ratio
+    Keep aspect ratio (Height will be calculated automatically)
 </label>
 
 <button onclick="resizeImages()">Resize Images (Batch Supported)</button>
@@ -137,6 +140,9 @@ Height (px): <input type="number" id="resizeHeight" value="600">
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     Reset Images
 </button>
+
+<h2 style="margin-top:30px;">Resize Preview</h2>
+<div id="previewZone"></div>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/en/">Back to Top Page</a>
@@ -200,6 +206,9 @@ function resizeImages() {
     const h = parseInt(document.getElementById("resizeHeight").value);
     const keepRatio = document.getElementById("keepRatio").checked;
 
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
+
     selectedFiles.forEach((file, index) => {
         const img = new Image();
         img.onload = () => {
@@ -220,7 +229,14 @@ function resizeImages() {
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 const baseName = file.name.replace(/\.[^/.]+$/, "");
-                download(url, `${baseName}_resized_${index}.png`);
+
+                // Preview
+                const previewImg = document.createElement("img");
+                previewImg.src = url;
+                previewZone.appendChild(previewImg);
+
+                // Download
+                download(url, `${baseName}_resized.png`);
             });
         };
         img.src = URL.createObjectURL(file);
@@ -242,6 +258,7 @@ function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "Drag & drop images here";
     document.getElementById("fileInput").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 </script>
 

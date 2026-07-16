@@ -14,20 +14,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>画像変換ツール｜JPEG・PNG・WebP・HEICに一括変換できる無料オンラインツール</title>
+<title>画像変換ツール｜JPEG・PNG・WebP・HEIC対応の無料オンライン変換</title>
 
-<meta name="description" content="画像をドラッグ＆ドロップするだけでJPEG・PNG・WebPに変換できる無料オンラインツール。iPhoneのHEIC画像にも対応し、複数画像の一括変換が可能。インストール不要でスマホでも利用できます。">
+<meta name="description" content="画像をドラッグ＆ドロップするだけでJPEG・PNG・WebPに変換できる無料オンラインツール。iPhoneのHEIC画像にも対応し、複数画像の一括変換が可能。画像はすべてブラウザ内で処理され安全です。">
 
-<meta name="keywords" content="画像変換, JPEG変換, PNG変換, WebP変換, HEIC変換, iPhone画像, 一括変換, 無料ツール, オンライン画像編集">
-
-<meta property="og:title" content="画像変換ツール｜JPEG・PNG・WebP・HEICに一括変換できる無料オンラインツール">
-<meta property="og:description" content="ブラウザだけでJPEG・PNG・WebPに変換できる無料オンラインツール。iPhoneのHEIC画像にも対応。">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/image-convert/">
-
-<!-- ★ HEIC対応ライブラリ -->
-<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+<meta name="keywords" content="画像変換, JPEG変換, PNG変換, WebP変換, HEIC変換, iPhone画像, 一括変換, 無料ツール">
 
 <style>
     body {
@@ -68,6 +59,14 @@
         border-radius: 6px;
         border: 1px solid #ccc;
     }
+    select {
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        margin-top: 20px;
+        border-radius: 8px;
+        border: 1px solid #aaa;
+    }
     button {
         background: #007bff;
         color: white;
@@ -82,28 +81,11 @@
     button:hover {
         background: #005fcc;
     }
-
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        select {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
 </style>
 </head>
@@ -111,15 +93,24 @@
 
 <h1>画像変換ツール（JPEG / PNG / WebP / HEIC対応）</h1>
 
-<p style="text-align:center;color:#555;">
-この画像変換ツールは、ブラウザだけで JPEG・PNG・WebP に変換できる無料オンラインサービスです。
-iPhoneのHEIC画像にも対応し、複数画像の一括変換が可能。ドラッグ＆ドロップするだけで簡単に使えます。
+<p style="text-align:center;color:#555; line-height:1.7;">
+この画像変換ツールは、ブラウザだけで JPEG・PNG・WebP に変換できる無料オンラインサービスです。  
+<strong>画像はすべてブラウザ内で処理され、外部にアップロードされません。</strong>  
+iPhoneのHEIC画像にも対応し、複数画像の一括変換が可能です。  
+ドラッグ＆ドロップするだけで簡単に使えます。
 </p>
+
+<h2>変換形式について</h2>
+<ul style="line-height:1.8;">
+    <li><strong>JPEG：</strong>軽くて扱いやすい。写真向け。</li>
+    <li><strong>PNG：</strong>透過対応。ロゴ・イラスト向け。</li>
+    <li><strong>WebP：</strong>高圧縮で軽量。Webサイト向け。</li>
+</ul>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
 
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput" multiple>
 
 <select id="format">
     <option value="image/jpeg">JPEG に変換</option>
@@ -133,9 +124,15 @@ iPhoneのHEIC画像にも対応し、複数画像の一括変換が可能。ド�
     画像をリセットする
 </button>
 
+<h2 style="margin-top:30px;">変換結果プレビュー</h2>
+<div id="previewZone"></div>
+
 <p style="margin-top:30px; text-align:center;">
     <a href="/">トップページに戻る</a>
 </p>
+
+<!-- HEIC対応ライブラリ -->
+<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
 
 <script>
 let selectedFiles = [];
@@ -163,7 +160,7 @@ document.getElementById("fileInput").addEventListener("change", async (e) => {
     await addFiles([...e.target.files]);
 });
 
-// ★ HEIC対応を含むファイル追加処理
+// HEIC対応
 async function addFiles(files) {
     for (const file of files) {
         if (file.type === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
@@ -213,6 +210,8 @@ function convertImages() {
     if (selectedFiles.length === 0) return alert("画像を選んでください");
 
     const format = document.getElementById("format").value;
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
 
     selectedFiles.forEach((file, index) => {
         const img = new Image();
@@ -227,7 +226,14 @@ function convertImages() {
                 const url = URL.createObjectURL(blob);
                 const baseName = file.name.replace(/\.[^/.]+$/, "");
                 const ext = format.split("/")[1];
-                download(url, `${baseName}_converted_${index}.${ext}`);
+
+                // プレビュー表示
+                const previewImg = document.createElement("img");
+                previewImg.src = url;
+                previewZone.appendChild(previewImg);
+
+                // ダウンロード
+                download(url, `${baseName}_converted.${ext}`);
             }, format);
         };
         img.src = URL.createObjectURL(file);
@@ -244,11 +250,12 @@ function download(url, filename) {
     a.click();
 }
 
-// 画像リセット機能
+// リセット
 function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
     document.getElementById("fileInput").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 </script>
 

@@ -14,13 +14,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Online Image Editing Tools｜Convert, Resize, Compress, Crop, Rotate, HEIC Support</title>
+<title>Online Image Editing Tools｜Convert, Resize, Compress, Crop, Rotate, PDF, HEIC</title>
 
-<meta name="description" content="Free browser-based image tools. Convert JPEG/PNG/WebP/HEIC, resize, compress, crop, rotate, and convert images to/from PDF. All processing is done locally in your browser — no uploads, fast and secure.">
+<meta name="description" content="Free browser-based image tools. Convert JPEG/PNG/WebP/HEIC, resize, compress, crop, rotate, and convert images to/from PDF. All processing is done locally — fast, secure, and private.">
 
 <meta name="keywords" content="image editing, HEIC converter, image convert, resize, compress, crop, rotate, PDF convert, free tools">
 
-<meta property="og:title" content="Online Image Editing Tools｜Convert, Resize, Compress, Crop, Rotate, HEIC Support">
+<meta property="og:title" content="Online Image Editing Tools｜Convert, Resize, Compress, Crop, Rotate, PDF, HEIC">
 <meta property="og:description" content="Free browser-based image editing tools. Convert JPEG/PNG/WebP/HEIC, resize, compress, crop, rotate, and PDF conversion. All processing is done locally and securely.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
@@ -32,129 +32,336 @@
         max-width: 1100px;
         margin: auto;
         padding: 40px 20px;
-        background: #fff;
+        background: #f7f9fc;
         color: #333;
     }
+    header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
     h1 {
-        text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
-    p {
-        text-align: center;
+    .tagline {
         color: #555;
-        margin-bottom: 40px;
         line-height: 1.7;
+        margin-bottom: 10px;
     }
-    ul {
-        list-style: none;
-        padding-left: 0;
-        max-width: 700px;
-        margin: auto;
+    .badge {
+        display: inline-block;
+        margin: 4px 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: #e3f2ff;
+        color: #0056b3;
     }
-    li {
-        margin: 22px 0;
-        font-size: 22px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
+    .lang-switch {
+        margin-top: 10px;
     }
-    a {
+    .lang-switch a {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    .lang-switch a:hover {
+        text-decoration: underline;
+    }
+
+    h2 {
+        margin: 26px 0 12px;
+        text-align: left;
+    }
+
+    .section-desc {
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 12px;
+        line-height: 1.6;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 14px;
+    }
+    .card {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        border: 1px solid #e3e7f0;
+    }
+    .card-title {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+    .card-title a {
         color: #007bff;
         text-decoration: none;
     }
-    a:hover {
+    .card-title a:hover {
         text-decoration: underline;
     }
-    .desc {
-        font-size: 14px;
+    .card-icon {
+        margin-right: 6px;
+    }
+    .card-desc {
+        font-size: 13px;
         color: #666;
-        margin-left: 44px;
         line-height: 1.6;
     }
-    footer {
-        margin-top: 50px;
-        text-align: center;
+    .card-meta {
+        margin-top: 6px;
+        font-size: 11px;
+        color: #999;
+    }
+
+    .purpose-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+    .purpose-list li {
+        margin: 6px 0;
         font-size: 14px;
+    }
+    .purpose-list a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .purpose-list a:hover {
+        text-decoration: underline;
+    }
+
+    .rank-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+    .rank-list li {
+        margin: 4px 0;
+        font-size: 14px;
+    }
+
+    .safety-box {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 14px 16px;
+        border: 1px solid #e3e7f0;
+        font-size: 13px;
+        color: #555;
+        line-height: 1.7;
+    }
+    .safety-box strong {
+        color: #222;
+    }
+
+    footer {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 13px;
         color: #777;
+    }
+    footer a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding: 24px 12px 40px;
+        }
+        h1 {
+            font-size: 24px;
+            line-height: 1.4;
+        }
+        .tagline {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .badge {
+            font-size: 13px;
+            padding: 6px 12px;
+        }
+        .grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+        .card {
+            padding: 18px 20px;
+        }
+        .card-title {
+            font-size: 17px;
+        }
+        .card-desc {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .section-desc {
+            font-size: 15px;
+        }
+        .purpose-list li,
+        .rank-list li {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        footer {
+            font-size: 14px;
+            margin-top: 50px;
+        }
     }
 </style>
 </head>
 <body>
 
-<h1>Online Image Editing Tools (HEIC Supported)</h1>
-<p>
-Free tools to convert, resize, compress, crop, and rotate images directly in your browser.  
-HEIC (iPhone images) supported.  
-<strong>All processing is done locally on your device — your images are never uploaded to any server.</strong>  
-Fast, secure, and privacy‑friendly.
-</p>
-
-<!-- 日本語ページへのリンク -->
-<p style="text-align:center; margin-bottom:30px;">
-    <a href="/">日本語ページはこちら</a>
-</p>
+<header>
+    <h1>Online Image Editing Tools (HEIC Supported)</h1>
+    <p class="tagline">
+        Free browser-based tools to convert, compress, resize, crop, rotate, and convert images to/from PDF.<br>
+        HEIC supported. No installation required — everything runs locally on your device.
+    </p>
+    <div>
+        <span class="badge">Free to use</span>
+        <span class="badge">No installation</span>
+        <span class="badge">Local processing</span>
+        <span class="badge">Mobile friendly</span>
+    </div>
+    <div class="lang-switch">
+        <a href="/">日本語ページはこちら</a>
+    </div>
+</header>
 
 <section>
-<h2 style="text-align:center;">What You Can Do on This Site</h2>
-<p>
-This site provides free browser-based tools to edit images quickly and safely.  
-You can convert images (JPEG / PNG / WebP / HEIC), resize, compress, crop, rotate, and convert images to/from PDF.  
-No installation required — simply drag & drop your files.
-</p>
+    <h2>Find Tools by Purpose</h2>
+    <p class="section-desc">Choose the tool based on what you want to do.</p>
+    <ul class="purpose-list">
+        <li>• Reduce image file size → <a href="/en/compress/">Image Compression</a></li>
+        <li>• Convert HEIC to JPG → <a href="/en/image-convert/">Image Conversion</a></li>
+        <li>• Resize images for web/blog → <a href="/en/resize/">Image Resize</a></li>
+        <li>• Crop unwanted areas → <a href="/en/crop/">Image Cropping</a></li>
+        <li>• Fix image orientation → <a href="/en/rotate/">Image Rotation</a></li>
+        <li>• Combine images into PDF → <a href="/en/pdf/">Images → PDF</a></li>
+        <li>• Extract images from PDF → <a href="/en/pdf/">PDF → Images</a></li>
+    </ul>
 </section>
 
 <section>
-<h2 style="text-align:center;">Privacy & Security</h2>
-<p>
-All image processing is performed locally in your browser.  
-Your files never leave your device, making this tool safe for personal photos, documents, and sensitive images.  
-Works on Windows, Mac, iPhone, Android, and any modern browser.
-</p>
+    <h2>Popular Tools</h2>
+    <p class="section-desc">Most frequently used tools on this site.</p>
+    <ul class="rank-list">
+        <li>1. <a href="/en/compress/">Image Compression</a></li>
+        <li>2. <a href="/en/image-convert/">Image Conversion</a></li>
+        <li>3. <a href="/en/resize/">Image Resize</a></li>
+        <li>4. <a href="/en/pdf/">PDF Conversion</a></li>
+        <li>5. <a href="/en/crop/">Image Cropping</a></li>
+    </ul>
 </section>
 
-<ul>
+<section>
+    <h2>Image Editing Tools</h2>
+    <p class="section-desc">Convert, compress, resize, crop, and rotate images directly in your browser.</p>
 
-    <li>🔄 <a href="/en/image-convert/">Image Conversion (JPEG / PNG / WebP / HEIC)</a></li>
-    <div class="desc">
-        Supports HEIC images from iPhone. Batch conversion available.  
-        Ideal for sharing images on websites, apps, or social media.
+    <div class="grid">
+
+        <div class="card">
+            <div class="card-title">
+                <span class="card-icon">🔄</span>
+                <a href="/en/image-convert/">Image Conversion (JPEG / PNG / WebP / HEIC)</a>
+            </div>
+            <div class="card-desc">
+                Convert between popular formats including HEIC. Batch conversion supported.
+            </div>
+            <div class="card-meta">HEIC / Batch / Local processing</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span class="card-icon">📦</span>
+                <a href="/en/compress/">Image Compression</a>
+            </div>
+            <div class="card-desc">
+                Reduce file size while keeping quality. Perfect for email or web uploads.
+            </div>
+            <div class="card-meta">Quality control / Multi-image</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span class="card-icon">📏</span>
+                <a href="/en/resize/">Image Resize</a>
+            </div>
+            <div class="card-desc">
+                Resize images while maintaining aspect ratio. Ideal for thumbnails and blogs.
+            </div>
+            <div class="card-meta">Aspect ratio / Multi-image</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span class="card-icon">✂️</span>
+                <a href="/en/crop/">Image Cropping</a>
+            </div>
+            <div class="card-desc">
+                Crop unwanted areas easily. Great for profile photos or screenshots.
+            </div>
+            <div class="card-meta">Crop area / Preview</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span class="card-icon">🔁</span>
+                <a href="/en/rotate/">Image Rotation</a>
+            </div>
+            <div class="card-desc">
+                Rotate images 90°, 180°, or 270°. Includes preview.
+            </div>
+            <div class="card-meta">90° / 180° / 270°</div>
+        </div>
+
     </div>
+</section>
 
-    <li>📏 <a href="/en/resize/">Image Resize</a></li>
-    <div class="desc">
-        Resize images while keeping aspect ratio.  
-        Useful for thumbnails, blog images, and web optimization.
+<section>
+    <h2>PDF Tools</h2>
+    <p class="section-desc">Convert images to PDF or extract images from PDF files.</p>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="card-title">
+                <span class="card-icon">📄</span>
+                <a href="/en/pdf/">PDF Conversion (Images → PDF / PDF → Images)</a>
+            </div>
+            <div class="card-desc">
+                Combine images into a PDF or export PDF pages as PNG images.
+            </div>
+            <div class="card-meta">Images→PDF / PDF→PNG</div>
+        </div>
+
     </div>
+</section>
 
-    <li>📦 <a href="/en/compress/">Image Compression</a></li>
-    <div class="desc">
-        Reduce file size while maintaining quality.  
-        Perfect for email attachments or lightweight web images.
+<section>
+    <h2>Privacy & Security</h2>
+    <div class="safety-box">
+        <p>
+            <strong>All processing is done locally in your browser.</strong><br>
+            Your images never leave your device — nothing is uploaded to any server.
+        </p>
+        <p>
+            Safe for personal photos, documents, and sensitive files. Works on Windows, Mac, iPhone, Android, and modern browsers.
+        </p>
     </div>
-
-    <li>✂️ <a href="/en/crop/">Image Cropping</a></li>
-    <div class="desc">
-        Cut out unwanted parts of your images.  
-        Great for icons, profile photos, or trimming screenshots.
-    </div>
-
-    <li>🔁 <a href="/en/rotate/">Image Rotation</a></li>
-    <div class="desc">
-        Rotate images 90°, 180°, 270°, and more.  
-        Fix orientation issues from smartphone photos.
-    </div>
-
-    <li>📄 <a href="/en/pdf/">PDF Conversion (Images → PDF / PDF → Images)</a></li>
-    <div class="desc">
-        Convert images to PDF or extract images from PDF.  
-        Useful for documents, reports, and scanned files.
-    </div>
-
-</ul>
+</section>
 
 <footer>
     <a href="/en/privacy/">Privacy Policy</a> |
-    <a href="/en/contact/">Contact</a>
+    <a href="/en/contact/">Contact</a> |
+    <span>© brokkorori Tools</span>
 </footer>
 
 </body>

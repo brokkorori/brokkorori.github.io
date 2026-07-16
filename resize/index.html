@@ -16,15 +16,9 @@
 
 <title>画像リサイズツール｜縦横比を維持してサイズ変更できる無料オンラインツール</title>
 
-<meta name="description" content="画像のサイズを簡単に変更できる無料オンライン画像リサイズツール。縦横比を維持したリサイズ、ピクセル指定、複数画像の一括処理に対応。ドラッグ＆ドロップで簡単に使えます。">
+<meta name="description" content="画像のサイズを簡単に変更できる無料オンライン画像リサイズツール。縦横比維持、ピクセル指定、複数画像の一括処理に対応。画像はすべてブラウザ内で処理され安全です。">
 
-<meta name="keywords" content="画像リサイズ, サイズ変更, 縦横比維持, 画像編集, 無料ツール, オンライン画像編集">
-
-<meta property="og:title" content="画像リサイズツール｜縦横比を維持してサイズ変更できる無料オンラインツール">
-<meta property="og:description" content="ブラウザだけで画像のサイズを変更できる無料オンラインツール。縦横比維持やピクセル指定に対応。">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/resize/">
+<meta name="keywords" content="画像リサイズ, サイズ変更, 縦横比維持, 画像編集, 無料ツール">
 
 <style>
     body {
@@ -65,6 +59,19 @@
         border-radius: 6px;
         border: 1px solid #ccc;
     }
+    input[type="number"] {
+        padding: 10px;
+        font-size: 18px;
+        width: 150px;
+        margin: 5px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+    }
+    label {
+        font-size: 18px;
+        margin-top: 10px;
+        display: inline-block;
+    }
     button {
         background: #007bff;
         color: white;
@@ -79,31 +86,11 @@
     button:hover {
         background: #005fcc;
     }
-
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        input[type="number"] {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 5px;
-        }
-        label {
-            font-size: 18px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
 </style>
 </head>
@@ -111,16 +98,27 @@
 
 <h1>画像リサイズツール（縦横比維持対応）</h1>
 
-<p style="text-align:center;color:#555;">
-この画像リサイズツールは、ブラウザだけで画像のサイズを変更できる無料オンラインサービスです。
-縦横比を維持したリサイズやピクセル指定に対応し、複数画像の一括処理も可能。ドラッグ＆ドロップするだけで簡単に使えます。
+<p style="text-align:center;color:#555; line-height:1.7;">
+この画像リサイズツールは、ブラウザだけで画像のサイズを変更できる無料オンラインサービスです。  
+<strong>画像はすべてブラウザ内で処理され、外部にアップロードされません。</strong>  
+縦横比を維持したリサイズやピクセル指定に対応し、複数画像の一括処理も可能です。  
+ドラッグ＆ドロップするだけで簡単に使えます。
 </p>
+
+<h2>リサイズの使いどころ</h2>
+<ul style="line-height:1.8;">
+    <li><strong>ブログやSNS用に画像を軽くしたい</strong></li>
+    <li><strong>サムネイル用に小さくしたい</strong></li>
+    <li><strong>資料・プレゼン用にサイズを揃えたい</strong></li>
+    <li><strong>スマホで撮った大きすぎる画像を縮小したい</strong></li>
+</ul>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
 
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput" multiple>
 
+<h2>サイズ指定</h2>
 幅(px): <input type="number" id="resizeWidth" value="800">
 高さ(px): <input type="number" id="resizeHeight" value="600">
 
@@ -128,7 +126,7 @@
 
 <label>
     <input type="checkbox" id="keepRatio" checked>
-    縦横比を維持する
+    縦横比を維持する（幅だけ指定すると高さが自動計算されます）
 </label>
 
 <button onclick="resizeImages()">リサイズする（複数対応）</button>
@@ -136,6 +134,9 @@
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
+
+<h2 style="margin-top:30px;">リサイズ結果プレビュー</h2>
+<div id="previewZone"></div>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/">トップページに戻る</a>
@@ -199,6 +200,9 @@ function resizeImages() {
     const h = parseInt(document.getElementById("resizeHeight").value);
     const keepRatio = document.getElementById("keepRatio").checked;
 
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
+
     selectedFiles.forEach((file, index) => {
         const img = new Image();
         img.onload = () => {
@@ -219,7 +223,14 @@ function resizeImages() {
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 const baseName = file.name.replace(/\.[^/.]+$/, "");
-                download(url, `${baseName}_resized_${index}.png`);
+
+                // プレビュー表示
+                const previewImg = document.createElement("img");
+                previewImg.src = url;
+                previewZone.appendChild(previewImg);
+
+                // ダウンロード
+                download(url, `${baseName}_resized.png`);
             });
         };
         img.src = URL.createObjectURL(file);
@@ -236,11 +247,12 @@ function download(url, filename) {
     a.click();
 }
 
-// 画像リセット機能
+// リセット
 function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
     document.getElementById("fileInput").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 </script>
 

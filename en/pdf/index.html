@@ -2,29 +2,23 @@
 <html lang="en">
 <head>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3P9TPTXJK"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-M3P9TPTXJK');
-    </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M3P9TPTXJK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M3P9TPTXJK');
+</script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>PDF Conversion Tool｜Convert Images → PDF & PDF → Images Online for Free</title>
 
-<meta name="description" content="Free online tool to convert images to PDF or PDF pages to images. Supports drag & drop, batch image-to-PDF conversion, and PDF-to-PNG export. Works on smartphones and requires no installation.">
+<meta name="description" content="Free online tool to convert images to PDF or PDF pages to images. Supports drag & drop, page preview, A4 adjustment, and image sorting. All processing is done locally for safety.">
 
-<meta name="keywords" content="PDF conversion, image to PDF, PDF to image, JPG to PDF, PNG to PDF, PDF to PNG, free tool, online PDF editor">
-
-<meta property="og:title" content="PDF Conversion Tool｜Convert Images → PDF & PDF → Images Online for Free">
-<meta property="og:description" content="Convert images to PDF or PDF pages to images easily with drag & drop.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/en/pdf/">
+<meta name="keywords" content="PDF conversion, image to PDF, PDF to image, JPG to PDF, PNG to PDF, PDF to PNG, free tool">
 
 <style>
     body {
@@ -60,11 +54,18 @@
         width: 120px;
         text-align: center;
         font-size: 12px;
+        cursor: grab;
     }
     .thumb img {
         width: 100%;
         border-radius: 6px;
         border: 1px solid #ccc;
+    }
+    .previewPage {
+        margin-top: 10px;
+        max-width: 300px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
     button {
         background: #007bff;
@@ -80,6 +81,13 @@
     button:hover {
         background: #005fcc;
     }
+    select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+        margin-top: 10px;
+    }
     @media (max-width: 600px) {
         .thumb { width: 90px; }
         button { font-size: 20px; padding: 16px; }
@@ -92,39 +100,48 @@
 
 <p style="text-align:center;color:#555;">
 This PDF conversion tool allows you to convert images to PDF or convert PDF pages to images.  
-Supports batch image-to-PDF conversion and PDF-to-PNG export.  
-Simply drag & drop your files — no installation required, works on smartphones.
+<strong>All processing is done locally — your files are never uploaded.</strong>  
+Supports sorting, A4 adjustment, and page preview.
 </p>
+
+<hr>
 
 <!-- Images → PDF -->
 <h2>Images → PDF</h2>
 
+<p>You can convert multiple images into a single PDF. Drag to reorder images.</p>
+
 <div id="dropZoneImg">Drag & drop images here</div>
 
 <br>
-<input type="file" id="fileInputImg" multiple><br><br>
+<input type="file" id="fileInputImg" multiple>
+
+<label>Page Size:</label>
+<select id="pdfSize">
+    <option value="auto">Match image size</option>
+    <option value="a4">Fit to A4 size</option>
+</select>
 
 <button onclick="convertToPDF()">Convert Images to PDF</button>
-
-<button onclick="resetImages()" style="background:#888;margin-top:10px;">
-    Reset Images
-</button>
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">Reset Images</button>
 
 <hr style="margin:40px 0;">
 
 <!-- PDF → Images -->
 <h2>PDF → Images</h2>
 
+<p>Convert each PDF page into a PNG image.</p>
+
 <div id="dropZonePdf">Drag & drop PDF here</div>
 
 <br>
-<input type="file" id="fileInputPdf" accept="application/pdf"><br><br>
+<input type="file" id="fileInputPdf" accept="application/pdf">
 
 <button onclick="convertPdfToImages()">Convert PDF to Images</button>
+<button onclick="resetPdf()" style="background:#888;margin-top:10px;">Reset PDF</button>
 
-<button onclick="resetPdf()" style="background:#888;margin-top:10px;">
-    Reset PDF
-</button>
+<h2 style="margin-top:30px;">PDF Page Preview</h2>
+<div id="previewZone"></div>
 
 <p style="margin-top:40px; text-align:center;">
     <a href="/en/">Back to Top Page</a>
@@ -167,11 +184,14 @@ function addImages(files) {
 
 function showImageThumbs() {
     dropZoneImg.innerHTML = "";
-    selectedImages.forEach(file => {
+    selectedImages.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = e => {
             const div = document.createElement("div");
             div.className = "thumb";
+            div.draggable = true;
+            div.dataset.index = index;
+
             div.innerHTML = `
                 <img src="${e.target.result}">
                 <div>${file.name}</div>
@@ -180,23 +200,58 @@ function showImageThumbs() {
         };
         reader.readAsDataURL(file);
     });
+
+    enableDragSort();
+}
+
+function enableDragSort() {
+    const items = document.querySelectorAll(".thumb");
+
+    items.forEach(item => {
+        item.addEventListener("dragstart", e => {
+            e.dataTransfer.setData("index", item.dataset.index);
+        });
+
+        item.addEventListener("drop", e => {
+            e.preventDefault();
+            const from = e.dataTransfer.getData("index");
+            const to = item.dataset.index;
+
+            const temp = selectedImages[from];
+            selectedImages[from] = selectedImages[to];
+            selectedImages[to] = temp;
+
+            showImageThumbs();
+        });
+
+        item.addEventListener("dragover", e => e.preventDefault());
+    });
 }
 
 function convertToPDF() {
     if (selectedImages.length === 0) return alert("Please select images");
 
+    const pdfSize = document.getElementById("pdfSize").value;
     const pdf = new jspdf.jsPDF();
 
     selectedImages.forEach((file, index) => {
         const img = new Image();
         img.onload = () => {
-            const w = pdf.internal.pageSize.getWidth();
-            const h = pdf.internal.pageSize.getHeight();
+
+            let w = img.width;
+            let h = img.height;
+
+            if (pdfSize === "a4") {
+                w = 210;
+                h = 297;
+            }
+
             pdf.addImage(img, "JPEG", 0, 0, w, h);
+
             if (index < selectedImages.length - 1) pdf.addPage();
             if (index === selectedImages.length - 1) {
                 pdf.save("converted.pdf");
-                alert("Image → PDF conversion completed!");
+                alert("Images → PDF conversion completed!");
             }
         };
         img.src = URL.createObjectURL(file);
@@ -247,6 +302,9 @@ async function convertPdfToImages() {
     const pdfData = await selectedPdf.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
 
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
+
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const viewport = page.getViewport({ scale: 2 });
@@ -260,6 +318,12 @@ async function convertPdfToImages() {
 
         canvas.toBlob(blob => {
             const url = URL.createObjectURL(blob);
+
+            const img = document.createElement("img");
+            img.src = url;
+            img.className = "previewPage";
+            previewZone.appendChild(img);
+
             download(url, `page_${i}.png`);
         });
     }
@@ -271,6 +335,7 @@ function resetPdf() {
     selectedPdf = null;
     dropZonePdf.innerHTML = "Drag & drop PDF here";
     document.getElementById("fileInputPdf").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 
 function download(url, filename) {

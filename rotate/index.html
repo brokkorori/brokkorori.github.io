@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>画像回転ツール｜90°・180°・270°に無料で簡単に回転できるオンライン編集</title>
 
-<meta name="description" content="画像を90°・180°・270°に回転できる無料オンライン画像編集ツール。ドラッグ＆ドロップ対応で複数画像の一括回転にも対応。インストール不要でスマホでも利用できます。">
+<meta name="description" content="画像を90°・180°・270°に回転できる無料オンラインツール。回転後のプレビュー表示、複数画像の一括回転に対応。画像はすべてブラウザ内で処理され安全です。">
 
-<meta name="keywords" content="画像回転, 画像編集, 90度回転, 180度回転, 270度回転, 無料ツール, オンライン画像編集">
-
-<meta property="og:title" content="画像回転ツール｜90°・180°・270°に無料で簡単に回転できるオンライン編集">
-<meta property="og:description" content="ブラウザだけで画像を90°・180°・270°に回転できる無料オンラインツール。複数画像の一括回転にも対応。">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/rotate/">
+<meta name="keywords" content="画像回転, 画像編集, 90度回転, 180度回転, 270度回転, 無料ツール">
 
 <style>
     body {
@@ -55,6 +50,14 @@
         border-radius: 6px;
         border: 1px solid #ccc;
     }
+    select {
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        margin-top: 20px;
+        border-radius: 8px;
+        border: 1px solid #aaa;
+    }
     button {
         background: #007bff;
         color: white;
@@ -69,28 +72,11 @@
     button:hover {
         background: #005fcc;
     }
-
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        select {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
 </style>
 </head>
@@ -98,15 +84,23 @@
 
 <h1>画像回転ツール（90°・180°・270°）</h1>
 
-<p style="text-align:center;color:#555;">
-この画像回転ツールは、ブラウザだけで画像を 90°・180°・270° に回転できる無料オンラインサービスです。
-複数画像の一括回転に対応し、ドラッグ＆ドロップするだけで簡単に使えます。インストール不要でスマホでも利用できます。
+<p style="text-align:center;color:#555; line-height:1.7;">
+この画像回転ツールは、ブラウザだけで画像を 90°・180°・270° に回転できる無料オンラインサービスです。  
+<strong>画像はすべてブラウザ内で処理され、外部にアップロードされません。</strong>  
+複数画像の一括回転に対応し、ドラッグ＆ドロップするだけで簡単に使えます。
 </p>
+
+<h2>回転の使いどころ</h2>
+<ul style="line-height:1.8;">
+    <li><strong>スマホで撮った写真が横向きになってしまった</strong></li>
+    <li><strong>スキャン画像の向きを正したい</strong></li>
+    <li><strong>資料やブログ用に向きを揃えたい</strong></li>
+</ul>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
 
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput" multiple>
 
 <select id="rotate">
     <option value="90">90° 回転</option>
@@ -119,6 +113,9 @@
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
+
+<h2 style="margin-top:30px;">回転結果プレビュー</h2>
+<div id="previewZone"></div>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/">トップページに戻る</a>
@@ -174,6 +171,8 @@ function rotateImages() {
     if (selectedFiles.length === 0) return alert("画像を選んでください");
 
     const angle = parseInt(document.getElementById("rotate").value);
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
 
     selectedFiles.forEach((file, index) => {
         const img = new Image();
@@ -196,7 +195,12 @@ function rotateImages() {
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 const baseName = file.name.replace(/\.[^/.]+$/, "");
-                download(url, `${baseName}_rotated_${angle}_${index}.png`);
+
+                const previewImg = document.createElement("img");
+                previewImg.src = url;
+                previewZone.appendChild(previewImg);
+
+                download(url, `${baseName}_rotated_${angle}.png`);
             });
         };
         img.src = URL.createObjectURL(file);
@@ -216,6 +220,7 @@ function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
     document.getElementById("fileInput").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 </script>
 

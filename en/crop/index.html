@@ -14,14 +14,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Image Cropping Tool｜Free Online Crop & Cut Editor</title>
+<title>Image Cropping Tool｜Free Online Drag-to-Crop Editor</title>
 
-<meta name="description" content="Free online image cropping tool to cut unwanted parts of your images. Supports JPEG, PNG, and WebP. Drag & drop and adjust crop position, width, and height easily.">
+<meta name="description" content="Free online image cropping tool. Drag to select the crop area directly on your image. Supports JPEG, PNG, and WebP. All processing is done locally in your browser — fast and secure.">
 
 <meta name="keywords" content="image crop, crop tool, cut image, free image editor, online image editing">
 
-<meta property="og:title" content="Image Cropping Tool｜Free Online Crop & Cut Editor">
-<meta property="og:description" content="Crop unwanted parts of your images directly in your browser. Adjust position, width, and height with precision.">
+<meta property="og:title" content="Image Cropping Tool｜Free Online Drag-to-Crop Editor">
+<meta property="og:description" content="Crop unwanted parts of your images directly in your browser. Drag to select the crop area. Safe and fast local processing.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
 <meta property="og:url" content="https://brokkorori.github.io/en/crop/">
@@ -49,64 +49,23 @@
         text-align: center;
         margin-top: 20px;
         transition: 0.2s;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: flex-start;
-        justify-content: flex-start;
     }
-    .thumb {
-        width: 120px;
-        text-align: center;
-        font-size: 12px;
-    }
-    .thumb img {
-        width: 100%;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
-
-    .inputBox {
-        background: #f7f7f7;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
+    #canvasWrapper {
+        position: relative;
         margin-top: 20px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-    .inputItem {
-        display: flex;
-        flex-direction: column;
-        width: 200px;
-    }
-    .inputItem label {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    .inputItem input {
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 6px;
-        border: 1px solid #aaa;
-    }
-
-    #previewZone {
-        margin-top: 30px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-    .previewItem {
         text-align: center;
     }
-    .previewItem img {
-        max-width: 200px;
+    #mainCanvas {
+        max-width: 100%;
         border: 1px solid #ccc;
         border-radius: 6px;
     }
-
+    #cropArea {
+        position: absolute;
+        border: 2px dashed red;
+        background: rgba(255,0,0,0.2);
+        pointer-events: none;
+    }
     button {
         background: #007bff;
         color: white;
@@ -121,50 +80,36 @@
     button:hover {
         background: #005fcc;
     }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
 </style>
 </head>
 <body>
 
-<h1>Image Cropping Tool (Cut & Crop)</h1>
+<h1>Image Cropping Tool (Drag to Crop)</h1>
 
 <p style="text-align:center;color:#555;">
-This image cropping tool allows you to cut unwanted parts of your images directly in your browser.  
-You can adjust the crop position (x, y), width, and height for precise cropping.  
-Supports JPEG, PNG, and WebP. Drag & drop to start instantly.
+This tool allows you to crop unwanted parts of your images by simply dragging to select the area.  
+All processing is done locally in your browser — your images are never uploaded, making it fast and secure.  
+Supports JPEG, PNG, and WebP.
 </p>
 
-<div id="dropZone">Drag & drop images here</div>
-
+<div id="dropZone">Drag & drop an image here</div>
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput">
 
-<div class="inputBox">
-    <div class="inputItem">
-        <label>Crop Start Position (x)</label>
-        <input type="number" id="cropX" value="0">
-    </div>
-
-    <div class="inputItem">
-        <label>Crop Start Position (y)</label>
-        <input type="number" id="cropY" value="0">
-    </div>
-
-    <div class="inputItem">
-        <label>Crop Width (w)</label>
-        <input type="number" id="cropW" value="300">
-    </div>
-
-    <div class="inputItem">
-        <label>Crop Height (h)</label>
-        <input type="number" id="cropH" value="300">
-    </div>
+<div id="canvasWrapper">
+    <canvas id="mainCanvas"></canvas>
+    <div id="cropArea"></div>
 </div>
 
-<button onclick="resetImages()" style="background:#888;margin-top:10px;">
-    Reset Images
-</button>
+<button id="cropButton">Crop Selected Area</button>
 
-<h2 style="margin-top:30px;">Crop Preview</h2>
+<h2 style="margin-top:30px;">Cropped Result</h2>
 <div id="previewZone"></div>
 
 <p style="margin-top:30px; text-align:center;">
@@ -172,97 +117,84 @@ Supports JPEG, PNG, and WebP. Drag & drop to start instantly.
 </p>
 
 <script>
-let selectedFiles = [];
+let img = new Image();
+let canvas = document.getElementById("mainCanvas");
+let ctx = canvas.getContext("2d");
 
-const dropZone = document.getElementById("dropZone");
-const previewZone = document.getElementById("previewZone");
+let cropArea = document.getElementById("cropArea");
+let startX, startY, endX, endY;
+let isDragging = false;
 
-dropZone.addEventListener("dragover", (e) => {
+document.getElementById("dropZone").addEventListener("dragover", e => {
     e.preventDefault();
-    dropZone.style.background = "#ddeaff";
 });
-dropZone.addEventListener("dragleave", () => {
-    dropZone.style.background = "#eef5ff";
-});
-dropZone.addEventListener("drop", (e) => {
+document.getElementById("dropZone").addEventListener("drop", e => {
     e.preventDefault();
-    dropZone.style.background = "#eef5ff";
-    addFiles([...e.dataTransfer.files]);
+    loadImage(e.dataTransfer.files[0]);
+});
+document.getElementById("fileInput").addEventListener("change", e => {
+    loadImage(e.target.files[0]);
 });
 
-document.getElementById("fileInput").addEventListener("change", (e) => {
-    addFiles([...e.target.files]);
+function loadImage(file) {
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+    };
+}
+
+canvas.addEventListener("mousedown", e => {
+    isDragging = true;
+    const rect = canvas.getBoundingClientRect();
+    startX = e.clientX - rect.left;
+    startY = e.clientY - rect.top;
 });
 
-function addFiles(files) {
-    selectedFiles = selectedFiles.concat(files);
-    showThumbnails();
-    cropImages();
-}
+canvas.addEventListener("mousemove", e => {
+    if (!isDragging) return;
+    const rect = canvas.getBoundingClientRect();
+    endX = e.clientX - rect.left;
+    endY = e.clientY - rect.top;
 
-function showThumbnails() {
-    dropZone.innerHTML = "";
-    selectedFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const div = document.createElement("div");
-            div.className = "thumb";
-            div.innerHTML = `
-                <img src="${e.target.result}">
-                <div>${file.name}</div>
-            `;
-            dropZone.appendChild(div);
-        };
-        reader.readAsDataURL(file);
+    const x = Math.min(startX, endX);
+    const y = Math.min(startY, endY);
+    const w = Math.abs(startX - endX);
+    const h = Math.abs(startY - endY);
+
+    cropArea.style.left = x + "px";
+    cropArea.style.top = y + "px";
+    cropArea.style.width = w + "px";
+    cropArea.style.height = h + "px";
+});
+
+canvas.addEventListener("mouseup", () => {
+    isDragging = false;
+});
+
+document.getElementById("cropButton").addEventListener("click", () => {
+    const rect = cropArea.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+
+    const x = rect.left - canvasRect.left;
+    const y = rect.top - canvasRect.top;
+    const w = rect.width;
+    const h = rect.height;
+
+    const cropCanvas = document.createElement("canvas");
+    cropCanvas.width = w;
+    cropCanvas.height = h;
+    const cropCtx = cropCanvas.getContext("2d");
+
+    cropCtx.drawImage(img, x, y, w, h, 0, 0, w, h);
+
+    cropCanvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        document.getElementById("previewZone").innerHTML =
+            `<img src="${url}">`;
     });
-}
-
-function cropImages() {
-    if (selectedFiles.length === 0) return;
-
-    previewZone.innerHTML = "";
-
-    const cropX = parseInt(document.getElementById("cropX").value);
-    const cropY = parseInt(document.getElementById("cropY").value);
-    const cropW = parseInt(document.getElementById("cropW").value);
-    const cropH = parseInt(document.getElementById("cropH").value);
-
-    selectedFiles.forEach((file, index) => {
-        const img = new Image();
-        img.onload = () => {
-            const canvas = document.createElement("canvas");
-            canvas.width = cropW;
-            canvas.height = cropH;
-            const ctx = canvas.getContext("2d");
-
-            ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
-
-            canvas.toBlob(blob => {
-                const url = URL.createObjectURL(blob);
-                const baseName = file.name.replace(/\.[^/.]+$/, "");
-
-                const previewDiv = document.createElement("div");
-                previewDiv.className = "previewItem";
-                previewDiv.innerHTML = `
-                    <img src="${url}">
-                    <div>${baseName}_cropped_${index}.png</div>
-                `;
-                previewZone.appendChild(previewDiv);
-            });
-        };
-        img.src = URL.createObjectURL(file);
-    });
-}
-
-document.querySelectorAll("#cropX, #cropY, #cropW, #cropH")
-    .forEach(input => input.addEventListener("input", cropImages));
-
-function resetImages() {
-    selectedFiles = [];
-    dropZone.innerHTML = "Drag & drop images here";
-    previewZone.innerHTML = "";
-    document.getElementById("fileInput").value = "";
-}
+});
 </script>
 
 </body>

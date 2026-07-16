@@ -7,12 +7,12 @@
 
 <title>Image Rotation Tool｜Rotate Images 90°, 180°, 270° Online for Free</title>
 
-<meta name="description" content="Free online tool to rotate images 90°, 180°, or 270°. Supports drag & drop and batch rotation. Works on smartphones and requires no installation.">
+<meta name="description" content="Free online tool to rotate images 90°, 180°, or 270°. Shows rotation preview, supports batch rotation, and processes images locally for safety.">
 
 <meta name="keywords" content="image rotation, rotate image, 90 degree, 180 degree, 270 degree, free tool, online image editor">
 
 <meta property="og:title" content="Image Rotation Tool｜Rotate Images 90°, 180°, 270° Online for Free">
-<meta property="og:description" content="Rotate images directly in your browser. Supports batch rotation and drag & drop.">
+<meta property="og:description" content="Rotate images directly in your browser with preview and batch support.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
 <meta property="og:url" content="https://brokkorori.github.io/en/rotate/">
@@ -56,6 +56,14 @@
         border-radius: 6px;
         border: 1px solid #ccc;
     }
+    select {
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        margin-top: 20px;
+        border-radius: 8px;
+        border: 1px solid #aaa;
+    }
     button {
         background: #007bff;
         color: white;
@@ -70,28 +78,11 @@
     button:hover {
         background: #005fcc;
     }
-
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        select {
-            width: 100%;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
 </style>
 </head>
@@ -99,16 +90,23 @@
 
 <h1>Image Rotation Tool (90°, 180°, 270°)</h1>
 
-<p style="text-align:center;color:#555;">
+<p style="text-align:center;color:#555; line-height:1.7;">
 This image rotation tool allows you to rotate images 90°, 180°, or 270° directly in your browser.  
-It supports batch rotation and drag & drop for easy use.  
-No installation required, and works on smartphones.
+<strong>All processing is done locally — your images are never uploaded.</strong>  
+Supports batch rotation and drag & drop for easy use.
 </p>
+
+<h2>When to Use Image Rotation</h2>
+<ul style="line-height:1.8;">
+    <li><strong>Photos taken on smartphones appear sideways</strong></li>
+    <li><strong>Scanned documents need orientation correction</strong></li>
+    <li><strong>Images must be aligned for blogs or presentations</strong></li>
+</ul>
 
 <div id="dropZone">Drag & drop images here</div>
 
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput" multiple>
 
 <select id="rotate">
     <option value="90">Rotate 90°</option>
@@ -121,6 +119,9 @@ No installation required, and works on smartphones.
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     Reset Images
 </button>
+
+<h2 style="margin-top:30px;">Rotation Preview</h2>
+<div id="previewZone"></div>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/en/">Back to Top Page</a>
@@ -176,6 +177,8 @@ function rotateImages() {
     if (selectedFiles.length === 0) return alert("Please select images");
 
     const angle = parseInt(document.getElementById("rotate").value);
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
 
     selectedFiles.forEach((file, index) => {
         const img = new Image();
@@ -198,7 +201,12 @@ function rotateImages() {
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 const baseName = file.name.replace(/\.[^/.]+$/, "");
-                download(url, `${baseName}_rotated_${angle}_${index}.png`);
+
+                const previewImg = document.createElement("img");
+                previewImg.src = url;
+                previewZone.appendChild(previewImg);
+
+                download(url, `${baseName}_rotated_${angle}.png`);
             });
         };
         img.src = URL.createObjectURL(file);
@@ -218,6 +226,7 @@ function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "Drag & drop images here";
     document.getElementById("fileInput").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 </script>
 

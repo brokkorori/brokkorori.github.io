@@ -2,29 +2,23 @@
 <html lang="ja">
 <head>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3P9TPTXJK"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-M3P9TPTXJK');
-    </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M3P9TPTXJK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M3P9TPTXJK');
+</script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>PDF変換ツール｜画像→PDF・PDF→画像を無料で簡単にできるオンラインツール</title>
 
-<meta name="description" content="画像をPDFに変換したり、PDFを画像に変換できる無料オンラインツール。ドラッグ＆ドロップ対応で、複数画像のPDF化やPDFページのPNG出力が簡単にできます。インストール不要でスマホでも利用可能。">
+<meta name="description" content="画像をPDFに変換したり、PDFを画像に変換できる無料オンラインツール。並び替え、A4サイズ調整、ページプレビュー対応。すべてブラウザ内で処理され安全です。">
 
-<meta name="keywords" content="PDF変換, 画像PDF変換, PDF画像変換, JPG PDF変換, PNG PDF変換, PDF PNG変換, 無料ツール, オンラインPDF編集">
-
-<meta property="og:title" content="PDF変換ツール｜画像→PDF・PDF→画像を無料で簡単にできるオンラインツール">
-<meta property="og:description" content="画像→PDF・PDF→画像の両方に対応した無料オンラインツール。ドラッグ＆ドロップで簡単に使えます。">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/pdf/">
+<meta name="keywords" content="PDF変換, 画像PDF変換, PDF画像変換, JPG PDF変換, PNG PDF変換, PDF PNG変換, 無料ツール">
 
 <style>
     body {
@@ -60,11 +54,18 @@
         width: 120px;
         text-align: center;
         font-size: 12px;
+        cursor: grab;
     }
     .thumb img {
         width: 100%;
         border-radius: 6px;
         border: 1px solid #ccc;
+    }
+    .previewPage {
+        margin-top: 10px;
+        max-width: 300px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
     button {
         background: #007bff;
@@ -80,6 +81,13 @@
     button:hover {
         background: #005fcc;
     }
+    select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+        margin-top: 10px;
+    }
     @media (max-width: 600px) {
         .thumb { width: 90px; }
         button { font-size: 20px; padding: 16px; }
@@ -91,39 +99,49 @@
 <h1>PDF変換ツール（画像→PDF / PDF→画像）</h1>
 
 <p style="text-align:center;color:#555;">
-このPDF変換ツールは、画像をPDFに変換したり、PDFを画像に変換できる無料オンラインサービスです。
-複数画像のPDF化や、PDFページのPNG出力に対応。ドラッグ＆ドロップするだけで簡単に使え、インストール不要でスマホでも利用できます。
+このPDF変換ツールは、画像をPDFに変換したり、PDFを画像に変換できる無料オンラインサービスです。  
+<strong>すべてブラウザ内で処理されるため、ファイルは外部にアップロードされません。</strong>  
+並び替え、A4サイズ調整、ページプレビューに対応しています。
 </p>
+
+<hr>
 
 <!-- 画像 → PDF -->
 <h2>画像 → PDF 変換</h2>
 
+<p>複数画像をまとめてPDF化できます。ドラッグで並び替え可能です。</p>
+
 <div id="dropZoneImg">ここに画像をドラッグ＆ドロップ</div>
 
 <br>
-<input type="file" id="fileInputImg" multiple><br><br>
+<input type="file" id="fileInputImg" multiple>
+
+<label>ページサイズ：</label>
+<select id="pdfSize">
+    <option value="auto">画像サイズに合わせる</option>
+    <option value="a4">A4サイズに合わせる</option>
+</select>
 
 <button onclick="convertToPDF()">画像をPDFに変換する</button>
-
-<button onclick="resetImages()" style="background:#888;margin-top:10px;">
-    画像をリセットする
-</button>
+<button onclick="resetImages()" style="background:#888;margin-top:10px;">画像をリセットする</button>
 
 <hr style="margin:40px 0;">
 
 <!-- PDF → 画像 -->
 <h2>PDF → 画像 変換</h2>
 
+<p>PDFの各ページをPNG画像として出力します。</p>
+
 <div id="dropZonePdf">ここにPDFをドラッグ＆ドロップ</div>
 
 <br>
-<input type="file" id="fileInputPdf" accept="application/pdf"><br><br>
+<input type="file" id="fileInputPdf" accept="application/pdf">
 
 <button onclick="convertPdfToImages()">PDFを画像に変換する</button>
+<button onclick="resetPdf()" style="background:#888;margin-top:10px;">PDFをリセットする</button>
 
-<button onclick="resetPdf()" style="background:#888;margin-top:10px;">
-    PDFをリセットする
-</button>
+<h2 style="margin-top:30px;">PDFページプレビュー</h2>
+<div id="previewZone"></div>
 
 <p style="margin-top:40px; text-align:center;">
     <a href="/">トップページに戻る</a>
@@ -166,11 +184,14 @@ function addImages(files) {
 
 function showImageThumbs() {
     dropZoneImg.innerHTML = "";
-    selectedImages.forEach(file => {
+    selectedImages.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = e => {
             const div = document.createElement("div");
             div.className = "thumb";
+            div.draggable = true;
+            div.dataset.index = index;
+
             div.innerHTML = `
                 <img src="${e.target.result}">
                 <div>${file.name}</div>
@@ -179,19 +200,54 @@ function showImageThumbs() {
         };
         reader.readAsDataURL(file);
     });
+
+    enableDragSort();
+}
+
+function enableDragSort() {
+    const items = document.querySelectorAll(".thumb");
+
+    items.forEach(item => {
+        item.addEventListener("dragstart", e => {
+            e.dataTransfer.setData("index", item.dataset.index);
+        });
+
+        item.addEventListener("drop", e => {
+            e.preventDefault();
+            const from = e.dataTransfer.getData("index");
+            const to = item.dataset.index;
+
+            const temp = selectedImages[from];
+            selectedImages[from] = selectedImages[to];
+            selectedImages[to] = temp;
+
+            showImageThumbs();
+        });
+
+        item.addEventListener("dragover", e => e.preventDefault());
+    });
 }
 
 function convertToPDF() {
     if (selectedImages.length === 0) return alert("画像を選んでください");
 
+    const pdfSize = document.getElementById("pdfSize").value;
     const pdf = new jspdf.jsPDF();
 
     selectedImages.forEach((file, index) => {
         const img = new Image();
         img.onload = () => {
-            const w = pdf.internal.pageSize.getWidth();
-            const h = pdf.internal.pageSize.getHeight();
+
+            let w = img.width;
+            let h = img.height;
+
+            if (pdfSize === "a4") {
+                w = 210;
+                h = 297;
+            }
+
             pdf.addImage(img, "JPEG", 0, 0, w, h);
+
             if (index < selectedImages.length - 1) pdf.addPage();
             if (index === selectedImages.length - 1) {
                 pdf.save("converted.pdf");
@@ -246,6 +302,9 @@ async function convertPdfToImages() {
     const pdfData = await selectedPdf.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
 
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
+
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const viewport = page.getViewport({ scale: 2 });
@@ -259,6 +318,12 @@ async function convertPdfToImages() {
 
         canvas.toBlob(blob => {
             const url = URL.createObjectURL(blob);
+
+            const img = document.createElement("img");
+            img.src = url;
+            img.className = "previewPage";
+            previewZone.appendChild(img);
+
             download(url, `page_${i}.png`);
         });
     }
@@ -270,6 +335,7 @@ function resetPdf() {
     selectedPdf = null;
     dropZonePdf.innerHTML = "ここにPDFをドラッグ＆ドロップ";
     document.getElementById("fileInputPdf").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 
 function download(url, filename) {

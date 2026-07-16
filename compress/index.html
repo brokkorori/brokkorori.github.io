@@ -16,15 +16,9 @@
 
 <title>画像圧縮ツール｜JPEG・PNG・WebPを高品質のまま圧縮できる無料オンラインツール</title>
 
-<meta name="description" content="画像を高品質のまま圧縮できる無料オンラインツール。JPEG・PNG・WebPに対応し、ドラッグ＆ドロップで簡単にファイルサイズを削減できます。複数画像の一括圧縮にも対応。">
+<meta name="description" content="画像を高品質のまま圧縮できる無料オンラインツール。JPEG・PNG・WebPに対応し、圧縮前後のファイルサイズを比較できます。画像はすべてブラウザ内で処理され安全です。複数画像の一括圧縮にも対応。">
 
 <meta name="keywords" content="画像圧縮, JPEG圧縮, PNG圧縮, WebP圧縮, ファイルサイズ削減, 画像軽量化, 無料ツール">
-
-<meta property="og:title" content="画像圧縮ツール｜JPEG・PNG・WebPを高品質のまま圧縮できる無料オンラインツール">
-<meta property="og:description" content="ブラウザだけでJPEG・PNG・WebPのファイルサイズを削減できる無料オンラインツール。複数画像の一括圧縮にも対応。">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/compress/">
 
 <style>
     body {
@@ -65,6 +59,10 @@
         border-radius: 6px;
         border: 1px solid #ccc;
     }
+    input[type="range"] {
+        width: 100%;
+        margin-top: 10px;
+    }
     button {
         background: #007bff;
         color: white;
@@ -79,25 +77,16 @@
     button:hover {
         background: #005fcc;
     }
-
-    @media (max-width: 600px) {
-        body {
-            padding: 10px;
-        }
-        #dropZone {
-            min-height: 150px;
-            padding: 10px;
-        }
-        .thumb {
-            width: 90px;
-        }
-        input[type="range"] {
-            width: 100%;
-        }
-        button {
-            font-size: 20px;
-            padding: 16px;
-        }
+    #previewZone img {
+        max-width: 300px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+    .sizeInfo {
+        font-size: 14px;
+        color: #555;
+        margin-top: 5px;
     }
 </style>
 </head>
@@ -105,15 +94,24 @@
 
 <h1>画像圧縮ツール（JPEG / PNG / WebP）</h1>
 
-<p style="text-align:center;color:#555;">
-この画像圧縮ツールは、ブラウザだけで JPEG・PNG・WebP のファイルサイズを削減できる無料オンラインサービスです。
-画質を保ちながら圧縮でき、複数画像の一括圧縮にも対応しています。インストール不要で、ドラッグ＆ドロップするだけで簡単に使えます。
+<p style="text-align:center;color:#555; line-height:1.7;">
+この画像圧縮ツールは、ブラウザだけで JPEG・PNG・WebP のファイルサイズを削減できる無料オンラインサービスです。  
+<strong>画像はすべてブラウザ内で処理され、外部にアップロードされません。</strong>  
+画質を保ちながら圧縮でき、複数画像の一括圧縮にも対応しています。
 </p>
+
+<h2>圧縮の使いどころ</h2>
+<ul style="line-height:1.8;">
+    <li><strong>ブログやSNSにアップする画像を軽くしたい</strong></li>
+    <li><strong>メール添付の容量を減らしたい</strong></li>
+    <li><strong>サイト表示速度を改善したい</strong></li>
+    <li><strong>スマホで撮った大きすぎる画像を軽量化したい</strong></li>
+</ul>
 
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
 
 <br>
-<input type="file" id="fileInput" multiple><br><br>
+<input type="file" id="fileInput" multiple>
 
 <label>圧縮率（品質）: <span id="qualityValue">0.8</span></label>
 <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.8">
@@ -123,6 +121,9 @@
 <button onclick="resetImages()" style="background:#888;margin-top:10px;">
     画像をリセットする
 </button>
+
+<h2 style="margin-top:30px;">圧縮結果プレビュー</h2>
+<div id="previewZone"></div>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/">トップページに戻る</a>
@@ -167,6 +168,7 @@ function showThumbnails() {
             div.innerHTML = `
                 <img src="${e.target.result}">
                 <div>${file.name}</div>
+                <div class="sizeInfo">元サイズ: ${(file.size / 1024).toFixed(1)} KB</div>
             `;
             dropZone.appendChild(div);
         };
@@ -182,6 +184,8 @@ function compressImages() {
     if (selectedFiles.length === 0) return alert("画像を選んでください");
 
     const quality = parseFloat(document.getElementById("quality").value);
+    const previewZone = document.getElementById("previewZone");
+    previewZone.innerHTML = "";
 
     selectedFiles.forEach((file, index) => {
         const img = new Image();
@@ -195,7 +199,16 @@ function compressImages() {
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 const baseName = file.name.replace(/\.[^/.]+$/, "");
-                download(url, `${baseName}_compressed_${index}.jpg`);
+
+                const previewDiv = document.createElement("div");
+                previewDiv.innerHTML = `
+                    <img src="${url}">
+                    <div>${baseName}_compressed.jpg</div>
+                    <div class="sizeInfo">圧縮後: ${(blob.size / 1024).toFixed(1)} KB</div>
+                `;
+                previewZone.appendChild(previewDiv);
+
+                download(url, `${baseName}_compressed.jpg`);
             }, "image/jpeg", quality);
         };
         img.src = URL.createObjectURL(file);
@@ -215,6 +228,7 @@ function resetImages() {
     selectedFiles = [];
     dropZone.innerHTML = "ここに画像をドラッグ＆ドロップ";
     document.getElementById("fileInput").value = "";
+    document.getElementById("previewZone").innerHTML = "";
 }
 </script>
 

@@ -20,12 +20,6 @@
 
 <meta name="keywords" content="image crop, crop tool, cut image, free image editor, online image editing">
 
-<meta property="og:title" content="Image Cropping Tool｜Free Online Drag-to-Crop Editor">
-<meta property="og:description" content="Crop unwanted parts of your images directly in your browser. Drag to select the crop area. Safe and fast local processing.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/en/crop/">
-
 <style>
     body {
         font-family: sans-serif;
@@ -34,10 +28,18 @@
         margin: auto;
         background: #fff;
         color: #333;
+        line-height: 1.7;
     }
     h1 {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        font-size: 26px;
+    }
+    h2 {
+        margin-top: 30px;
+        border-left: 5px solid #007bff;
+        padding-left: 10px;
+        font-size: 20px;
     }
     #dropZone {
         width: 100%;
@@ -46,9 +48,12 @@
         border: 2px dashed #88a;
         background: #eef5ff;
         border-radius: 10px;
-        text-align: center;
         margin-top: 20px;
+        text-align: center;
         transition: 0.2s;
+    }
+    #dropZone:hover {
+        background: #ddeaff;
     }
     #canvasWrapper {
         position: relative;
@@ -70,7 +75,7 @@
         background: #007bff;
         color: white;
         border: none;
-        padding: 14px 20px;
+        padding: 16px;
         border-radius: 8px;
         font-size: 18px;
         cursor: pointer;
@@ -86,6 +91,33 @@
         border: 1px solid #ccc;
         border-radius: 6px;
     }
+
+    /* Mobile optimization */
+    @media (max-width: 600px) {
+        h1 { font-size: 22px; }
+        h2 { font-size: 18px; }
+        button { font-size: 19px; padding: 18px; }
+    }
+
+    .related-box {
+        background: #f7f9fc;
+        border: 1px solid #e3e7f0;
+        padding: 16px;
+        border-radius: 10px;
+        margin-top: 40px;
+    }
+    .related-box ul {
+        list-style: none;
+        padding-left: 0;
+        line-height: 1.8;
+    }
+    .related-box a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .related-box a:hover {
+        text-decoration: underline;
+    }
 </style>
 </head>
 <body>
@@ -94,14 +126,16 @@
 
 <p style="text-align:center;color:#555;">
 This tool allows you to crop unwanted parts of your images by simply dragging to select the area.  
-All processing is done locally in your browser — your images are never uploaded, making it fast and secure.  
+<strong>All processing is done locally — your images never leave your device.</strong>  
 Supports JPEG, PNG, and WebP.
 </p>
 
+<h2>Load Image</h2>
 <div id="dropZone">Drag & drop an image here</div>
 <br>
 <input type="file" id="fileInput">
 
+<h2>Crop Operation</h2>
 <div id="canvasWrapper">
     <canvas id="mainCanvas"></canvas>
     <div id="cropArea"></div>
@@ -109,8 +143,24 @@ Supports JPEG, PNG, and WebP.
 
 <button id="cropButton">Crop Selected Area</button>
 
-<h2 style="margin-top:30px;">Cropped Result</h2>
+<h2>Cropped Result</h2>
 <div id="previewZone"></div>
+
+<!-- Related tools -->
+<div class="related-box">
+    <h2>Related Tools</h2>
+    <ul>
+        <li>📏 <a href="/en/resize/">Image Resize</a></li>
+        <li>📦 <a href="/en/compress/">Image Compression</a></li>
+        <li>✂️ <a href="/en/crop/">Image Cropping</a></li>
+        <li>🔁 <a href="/en/rotate/">Image Rotation</a></li>
+        <li>📄 <a href="/en/pdf/">PDF Conversion (Images → PDF / PDF → Images)</a></li>
+    </ul>
+</div>
+
+<p style="text-align:center; color:#777; margin-top:40px;">
+※ All processing is done locally in your browser. No files are uploaded.
+</p>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/en/">Back to Top Page</a>
@@ -142,6 +192,8 @@ function loadImage(file) {
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
+        cropArea.style.width = "0px";
+        cropArea.style.height = "0px";
     };
 }
 
@@ -181,6 +233,11 @@ document.getElementById("cropButton").addEventListener("click", () => {
     const y = rect.top - canvasRect.top;
     const w = rect.width;
     const h = rect.height;
+
+    if (w === 0 || h === 0) {
+        alert("Please select a crop area");
+        return;
+    }
 
     const cropCanvas = document.createElement("canvas");
     cropCanvas.width = w;

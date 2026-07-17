@@ -18,13 +18,7 @@
 
     <meta name="description" content="ブラウザだけで画像を編集できる無料オンラインツール集。JPEG・PNG・WebP・HEIC変換、リサイズ、圧縮、トリミング、回転、PDF変換に対応。画像はすべてローカル処理され、外部にアップロードされません。">
 
-    <meta name="keywords" content="画像編集, HEIC変換, iPhone画像, 画像変換, 画像リサイズ, 画像圧縮, WebP変換, JPEG変換, PNG変換, PDF変換, 無料ツール">
-
-    <meta property="og:title" content="オンライン画像編集ツール集｜変換・圧縮・リサイズ・PDF・HEIC対応">
-    <meta property="og:description" content="ブラウザだけで画像を編集できる無料ツール集。画像変換・圧縮・リサイズ・PDF変換など、日常の画像処理をまとめて実行できます。">
-    <meta property="og:type" content="website">
     <meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-    <meta property="og:url" content="https://brokkorori.github.io/">
 
     <style>
         body {
@@ -32,79 +26,92 @@
             max-width: 1100px;
             margin: auto;
             padding: 30px 16px 60px;
-            background: #f7f9fc;
+            background: #f5f6f8; /* Notion風の薄グレー */
             color: #333;
+            line-height: 1.7;
         }
+
+        /* ---------------- Hero ---------------- */
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            padding: 30px 10px;
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e3e7f0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
         }
         h1 {
-            margin-bottom: 10px;
+            font-size: 28px;
+            margin-bottom: 14px;
         }
         .tagline {
             color: #555;
-            line-height: 1.7;
-            margin-bottom: 10px;
+            font-size: 15px;
+            margin-bottom: 16px;
         }
         .badge {
             display: inline-block;
             margin: 4px 6px;
-            padding: 4px 10px;
+            padding: 6px 12px;
             border-radius: 999px;
             font-size: 12px;
             background: #e3f2ff;
             color: #0056b3;
         }
         .lang-switch {
-            margin-top: 10px;
+            margin-top: 12px;
         }
         .lang-switch a {
             color: #007bff;
             text-decoration: none;
             font-size: 14px;
         }
-        .lang-switch a:hover {
-            text-decoration: underline;
-        }
 
+        /* ---------------- Section ---------------- */
         h2 {
-            margin: 26px 0 12px;
-            text-align: left;
+            margin: 30px 0 14px;
+            font-size: 20px;
+            border-left: 5px solid #007bff;
+            padding-left: 10px;
         }
-
         .section-desc {
             color: #555;
             font-size: 14px;
-            margin-bottom: 12px;
-            line-height: 1.6;
+            margin-bottom: 14px;
         }
 
+        /* ---------------- Cards ---------------- */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 14px;
+            gap: 18px;
         }
         .card {
             background: #ffffff;
-            border-radius: 10px;
-            padding: 14px 16px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            border-radius: 12px;
+            padding: 18px 20px;
             border: 1px solid #e3e7f0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
         }
         .card-title {
-            font-size: 16px;
-            margin-bottom: 6px;
+            font-size: 17px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
         }
         .card-title a {
             color: #007bff;
             text-decoration: none;
         }
-        .card-title a:hover {
-            text-decoration: underline;
-        }
         .card-icon {
-            margin-right: 6px;
+            font-size: 22px;
+            margin-right: 8px;
         }
         .card-desc {
             font-size: 13px;
@@ -112,72 +119,53 @@
             line-height: 1.6;
         }
         .card-meta {
-            margin-top: 6px;
+            margin-top: 8px;
             font-size: 11px;
             color: #999;
         }
 
-        .purpose-list {
-            list-style: none;
-            padding-left: 0;
-            margin: 0;
+        /* ---------------- Purpose Cards ---------------- */
+        .purpose-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
         }
-        .purpose-list li {
-            margin: 6px 0;
-            font-size: 14px;
-        }
-        .purpose-list a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .purpose-list a:hover {
-            text-decoration: underline;
-        }
-
-        .rank-list {
-            list-style: none;
-            padding-left: 0;
-            margin: 0;
-        }
-        .rank-list li {
-            margin: 4px 0;
-            font-size: 14px;
-        }
-
-        .safety-box {
+        .purpose-card {
             background: #ffffff;
             border-radius: 10px;
             padding: 14px 16px;
             border: 1px solid #e3e7f0;
-            font-size: 13px;
-            color: #555;
-            line-height: 1.7;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
         }
-        .safety-box strong {
-            color: #222;
+        .purpose-card a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 15px;
         }
 
+        /* ---------------- Safety ---------------- */
+        .safety-box {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 18px 20px;
+            border: 1px solid #e3e7f0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* ---------------- Footer ---------------- */
         footer {
             margin-top: 40px;
             text-align: center;
             font-size: 13px;
             color: #777;
         }
-        footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
 
         @media (max-width: 600px) {
-            body {
-                padding: 24px 10px 40px;
-            }
-            h1 {
-                font-size: 22px;
-            }
+            h1 { font-size: 22px; }
+            .card-title { font-size: 16px; }
+            .card-icon { font-size: 20px; }
         }
     </style>
 </head>
@@ -186,13 +174,13 @@
 <header>
     <h1>オンライン画像編集ツール集（HEIC対応）</h1>
     <p class="tagline">
-        ブラウザだけで画像を変換・圧縮・リサイズ・PDF変換できる無料ツール集です。<br>
-        iPhoneのHEIC画像にも対応。ドラッグ＆ドロップで、日常の画像処理をまとめて完了できます。
+        ブラウザだけで画像を変換・圧縮・リサイズ・PDF変換できる無料ツール集。<br>
+        すべてローカル処理で安全。スマホでもすぐ使えます。
     </p>
     <div>
         <span class="badge">無料で使える</span>
         <span class="badge">インストール不要</span>
-        <span class="badge">ブラウザ内でローカル処理</span>
+        <span class="badge">ローカル処理で安全</span>
         <span class="badge">スマホ対応</span>
     </div>
     <div class="lang-switch">
@@ -203,155 +191,114 @@
 <!-- 目的から探す -->
 <section>
     <h2>目的から探す</h2>
-    <p class="section-desc">
-        「とにかくこの作業をしたい」という人向けに、よくある用途別におすすめツールをまとめました。
-    </p>
-    <ul class="purpose-list">
-        <li>・スマホ写真を軽くしたい → <a href="/compress/">画像圧縮ツール</a></li>
-        <li>・HEICをJPGにしたい → <a href="/image-convert/">画像変換（HEIC対応）</a></li>
-        <li>・ブログ用に画像サイズを揃えたい → <a href="/resize/">画像リサイズ</a></li>
-        <li>・不要な部分を切り取りたい → <a href="/crop/">画像トリミング</a></li>
-        <li>・写真の向きがおかしい → <a href="/rotate/">画像回転</a></li>
-        <li>・画像をPDFにまとめたい → <a href="/pdf/">PDF変換（画像→PDF）</a></li>
-        <li>・PDFの中身を画像として取り出したい → <a href="/pdf/">PDF変換（PDF→画像）</a></li>
-    </ul>
+    <p class="section-desc">やりたい作業から最適なツールを選べます。</p>
+
+    <div class="purpose-grid">
+
+        <div class="purpose-card">
+            📦 スマホ写真を軽くしたい → <a href="/compress/">画像圧縮</a>
+        </div>
+
+        <div class="purpose-card">
+            🔄 HEICをJPGにしたい → <a href="/image-convert/">画像変換</a>
+        </div>
+
+        <div class="purpose-card">
+            📏 ブログ用にサイズを揃えたい → <a href="/resize/">画像リサイズ</a>
+        </div>
+
+        <div class="purpose-card">
+            ✂️ 不要部分を切り取りたい → <a href="/crop/">画像トリミング</a>
+        </div>
+
+        <div class="purpose-card">
+            🔁 写真の向きを直したい → <a href="/rotate/">画像回転</a>
+        </div>
+
+        <div class="purpose-card">
+            📄 画像をPDFにまとめたい → <a href="/pdf/">PDF変換</a>
+        </div>
+
+    </div>
 </section>
 
-<!-- 人気ツールランキング -->
+<!-- 人気ランキング -->
 <section>
     <h2>人気ツールランキング</h2>
-    <p class="section-desc">
-        よく使われている定番ツールです。迷ったら、まずここから試してみてください。
-    </p>
-    <ul class="rank-list">
-        <li>1位：<a href="/compress/">画像圧縮ツール</a>（ファイルサイズ削減に最適）</li>
-        <li>2位：<a href="/image-convert/">画像変換ツール</a>（HEIC / WebP / PNG / JPEG対応）</li>
-        <li>3位：<a href="/resize/">画像リサイズツール</a>（縦横比維持でサイズ変更）</li>
-        <li>4位：<a href="/pdf/">PDF変換ツール</a>（画像→PDF / PDF→画像）</li>
-        <li>5位：<a href="/crop/">画像トリミングツール</a>（不要部分の切り出し）</li>
-    </ul>
+    <p class="section-desc">よく使われている定番ツールです。</p>
+
+    <div class="purpose-grid">
+
+        <div class="purpose-card">1位：📦 <a href="/compress/">画像圧縮</a></div>
+        <div class="purpose-card">2位：🔄 <a href="/image-convert/">画像変換</a></div>
+        <div class="purpose-card">3位：📏 <a href="/resize/">画像リサイズ</a></div>
+        <div class="purpose-card">4位：📄 <a href="/pdf/">PDF変換</a></div>
+        <div class="purpose-card">5位：✂️ <a href="/crop/">画像トリミング</a></div>
+
+    </div>
 </section>
 
-<!-- カテゴリ：画像編集ツール -->
+<!-- 画像編集ツール -->
 <section>
     <h2>画像編集ツール</h2>
-    <p class="section-desc">
-        画像の変換・圧縮・リサイズ・トリミング・回転など、日常的によく使う処理をまとめています。
-    </p>
+    <p class="section-desc">日常的によく使う画像処理をまとめています。</p>
 
     <div class="grid">
 
         <div class="card">
-            <div class="card-title">
-                <span class="card-icon">🔄</span>
-                <a href="/image-convert/">画像変換（JPEG / PNG / WebP / HEIC）</a>
-            </div>
-            <div class="card-desc">
-                iPhoneのHEIC画像にも対応した画像変換ツールです。<br>
-                複数ファイルの一括変換が可能で、ブログ・SNS・資料作成など幅広い用途に使えます。
-            </div>
-            <div class="card-meta">
-                HEIC対応 / 一括変換 / ブラウザ内処理
-            </div>
+            <div class="card-title"><span class="card-icon">🔄</span><a href="/image-convert/">画像変換（JPEG / PNG / WebP / HEIC）</a></div>
+            <div class="card-desc">HEIC対応。複数ファイルの一括変換が可能。</div>
+            <div class="card-meta">HEIC対応 / 一括変換 / ローカル処理</div>
         </div>
 
         <div class="card">
-            <div class="card-title">
-                <span class="card-icon">📦</span>
-                <a href="/compress/">画像圧縮</a>
-            </div>
-            <div class="card-desc">
-                画質を保ちながらファイルサイズを削減できる圧縮ツールです。<br>
-                メール添付やWeb掲載用の軽量画像を簡単に作成できます。
-            </div>
-            <div class="card-meta">
-                JPEG圧縮 / 品質調整 / 複数画像対応
-            </div>
+            <div class="card-title"><span class="card-icon">📦</span><a href="/compress/">画像圧縮</a></div>
+            <div class="card-desc">画質を保ちながらファイルサイズを削減。</div>
+            <div class="card-meta">JPEG圧縮 / 品質調整 / 複数画像対応</div>
         </div>
 
         <div class="card">
-            <div class="card-title">
-                <span class="card-icon">📏</span>
-                <a href="/resize/">画像リサイズ</a>
-            </div>
-            <div class="card-desc">
-                縦横比を維持したまま画像サイズを変更できます。<br>
-                Webサイトやサムネイル用の画像調整に便利です。
-            </div>
-            <div class="card-meta">
-                ピクセル指定 / 比率維持 / 複数画像対応
-            </div>
+            <div class="card-title"><span class="card-icon">📏</span><a href="/resize/">画像リサイズ</a></div>
+            <div class="card-desc">縦横比を維持したままサイズ変更。</div>
+            <div class="card-meta">比率維持 / ピクセル指定</div>
         </div>
 
         <div class="card">
-            <div class="card-title">
-                <span class="card-icon">✂️</span>
-                <a href="/crop/">画像トリミング</a>
-            </div>
-            <div class="card-desc">
-                不要な部分を切り抜いて保存できるトリミングツールです。<br>
-                アイコン作成や写真の一部切り出しに便利です。
-            </div>
-            <div class="card-meta">
-                範囲指定 / プレビュー / シンプル操作
-            </div>
+            <div class="card-title"><span class="card-icon">✂️</span><a href="/crop/">画像トリミング</a></div>
+            <div class="card-desc">不要部分を切り抜いて保存。</div>
+            <div class="card-meta">範囲指定 / プレビュー</div>
         </div>
 
         <div class="card">
-            <div class="card-title">
-                <span class="card-icon">🔁</span>
-                <a href="/rotate/">画像回転</a>
-            </div>
-            <div class="card-desc">
-                画像を90°・180°・270°に回転できるツールです。<br>
-                スマホで撮影した写真の向き調整に最適で、回転後のプレビューも表示されます。
-            </div>
-            <div class="card-meta">
-                90° / 180° / 270° / プレビュー表示
-            </div>
+            <div class="card-title"><span class="card-icon">🔁</span><a href="/rotate/">画像回転</a></div>
+            <div class="card-desc">90°・180°・270°に回転可能。</div>
+            <div class="card-meta">回転 / プレビュー表示</div>
         </div>
 
     </div>
 </section>
 
-<!-- カテゴリ：PDFツール -->
+<!-- PDFツール -->
 <section>
     <h2>PDF関連ツール</h2>
-    <p class="section-desc">
-        画像とPDFの相互変換に対応したツールです。書類の画像化や、画像のPDF化に便利です。
-    </p>
+    <p class="section-desc">画像とPDFの相互変換に対応。</p>
 
     <div class="grid">
-
         <div class="card">
-            <div class="card-title">
-                <span class="card-icon">📄</span>
-                <a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a>
-            </div>
-            <div class="card-desc">
-                画像をPDFにまとめたり、PDFの各ページを画像として書き出せるツールです。<br>
-                資料作成や書類の共有に役立ちます。
-            </div>
-            <div class="card-meta">
-                画像→PDF / PDF→PNG / 複数ページ対応
-            </div>
+            <div class="card-title"><span class="card-icon">📄</span><a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a></div>
+            <div class="card-desc">画像をPDF化、PDFを画像化できます。</div>
+            <div class="card-meta">画像→PDF / PDF→PNG</div>
         </div>
-
     </div>
 </section>
 
-<!-- 安全性・技術的な特徴 -->
+<!-- 安全性 -->
 <section>
     <h2>安全性と技術的な特徴</h2>
     <div class="safety-box">
-        <p>
-            <strong>すべての画像処理はブラウザ内で完結します。</strong><br>
-            画像データは外部サーバーにアップロードされず、お使いのPC・スマホのローカル環境のみで処理されます。
-        </p>
-        <p>
-            機密性の高い書類や、個人情報を含む写真でも安心してご利用いただけます。<br>
-            Windows・Mac・iPhone・Androidなど、主要な環境で同じように動作するよう設計されています。
-        </p>
+        <strong>すべての画像処理はブラウザ内で完結します。</strong><br>
+        外部サーバーにアップロードされないため、安全に利用できます。<br><br>
+        Windows・Mac・iPhone・Androidなど主要環境で動作します。
     </div>
 </section>
 

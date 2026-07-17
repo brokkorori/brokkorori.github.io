@@ -28,10 +28,18 @@
         margin: auto;
         background: #fff;
         color: #333;
+        line-height: 1.7;
     }
     h1 {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        font-size: 26px;
+    }
+    h2 {
+        margin-top: 30px;
+        border-left: 5px solid #007bff;
+        padding-left: 10px;
+        font-size: 20px;
     }
     #dropZone {
         width: 100%;
@@ -40,9 +48,12 @@
         border: 2px dashed #88a;
         background: #eef5ff;
         border-radius: 10px;
-        text-align: center;
         margin-top: 20px;
+        text-align: center;
         transition: 0.2s;
+    }
+    #dropZone:hover {
+        background: #ddeaff;
     }
     #canvasWrapper {
         position: relative;
@@ -64,7 +75,7 @@
         background: #007bff;
         color: white;
         border: none;
-        padding: 14px 20px;
+        padding: 16px;
         border-radius: 8px;
         font-size: 18px;
         cursor: pointer;
@@ -80,6 +91,33 @@
         border: 1px solid #ccc;
         border-radius: 6px;
     }
+
+    /* スマホ最適化 */
+    @media (max-width: 600px) {
+        h1 { font-size: 22px; }
+        h2 { font-size: 18px; }
+        button { font-size: 19px; padding: 18px; }
+    }
+
+    .related-box {
+        background: #f7f9fc;
+        border: 1px solid #e3e7f0;
+        padding: 16px;
+        border-radius: 10px;
+        margin-top: 40px;
+    }
+    .related-box ul {
+        list-style: none;
+        padding-left: 0;
+        line-height: 1.8;
+    }
+    .related-box a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .related-box a:hover {
+        text-decoration: underline;
+    }
 </style>
 </head>
 <body>
@@ -88,13 +126,15 @@
 
 <p style="text-align:center;color:#555;">
 このツールは、画像の不要な部分をドラッグ操作で簡単に切り抜きできる無料オンラインサービスです。  
-画像はすべてブラウザ内で処理され、外部にアップロードされないため安全に利用できます。
+<strong>画像はすべてブラウザ内で処理され、外部にアップロードされません。</strong>
 </p>
 
+<h2>画像を読み込む</h2>
 <div id="dropZone">ここに画像をドラッグ＆ドロップ</div>
 <br>
 <input type="file" id="fileInput">
 
+<h2>トリミング操作</h2>
 <div id="canvasWrapper">
     <canvas id="mainCanvas"></canvas>
     <div id="cropArea"></div>
@@ -102,8 +142,24 @@
 
 <button id="cropButton">選択範囲をトリミングする</button>
 
-<h2 style="margin-top:30px;">トリミング結果</h2>
+<h2>トリミング結果</h2>
 <div id="previewZone"></div>
+
+<!-- 関連ツール -->
+<div class="related-box">
+    <h2>関連ツール</h2>
+    <ul>
+        <li>📏 <a href="/resize/">画像リサイズ</a></li>
+        <li>📦 <a href="/compress/">画像圧縮</a></li>
+        <li>✂️ <a href="/crop/">画像トリミング</a></li>
+        <li>🔁 <a href="/rotate/">画像回転</a></li>
+        <li>📄 <a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a></li>
+    </ul>
+</div>
+
+<p style="text-align:center; color:#777; margin-top:40px;">
+※このツールはすべてブラウザ内で処理され、画像は外部に送信されません。
+</p>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/">トップページに戻る</a>
@@ -135,6 +191,8 @@ function loadImage(file) {
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
+        cropArea.style.width = "0px";
+        cropArea.style.height = "0px";
     };
 }
 
@@ -174,6 +232,11 @@ document.getElementById("cropButton").addEventListener("click", () => {
     const y = rect.top - canvasRect.top;
     const w = rect.width;
     const h = rect.height;
+
+    if (w === 0 || h === 0) {
+        alert("トリミング範囲を選択してください");
+        return;
+    }
 
     const cropCanvas = document.createElement("canvas");
     cropCanvas.width = w;

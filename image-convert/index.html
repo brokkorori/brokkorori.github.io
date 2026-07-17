@@ -163,16 +163,15 @@ iPhoneのHEIC画像にも対応し、複数画像の一括変換が可能です�
 <div id="previewZone"></div>
 
 <!-- 関連ツール -->
-<div class="related-box">
-    <h2>関連ツール</h2>
-    <ul>
-        <li>🔧 <a href="/resize/">画像リサイズ</a></li>
-        <li>📦 <a href="/compress/">画像圧縮</a></li>
-        <li>✂️ <a href="/crop/">画像トリミング</a></li>
-        <li>🔁 <a href="/rotate/">画像回転</a></li>
-        <li>📄 <a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a></li>
-    </ul>
-</div>
+<div id="related-tools"></div>
+<script>
+fetch("/header-ja.html")
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById("related-tools").innerHTML = html;
+  });
+</script>
+
 
 <p style="text-align:center; color:#777; margin-top:40px;">
 ※このツールはすべてブラウザ内で処理され、画像は外部に送信されません。

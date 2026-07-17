@@ -28,10 +28,18 @@
         margin: auto;
         background: #fff;
         color: #333;
+        line-height: 1.7;
     }
     h1 {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        font-size: 26px;
+    }
+    h2 {
+        margin-top: 30px;
+        border-left: 5px solid #007bff;
+        padding-left: 10px;
+        font-size: 20px;
     }
     #dropZone {
         width: 100%;
@@ -40,7 +48,6 @@
         border: 2px dashed #88a;
         background: #eef5ff;
         border-radius: 10px;
-        text-align: center;
         margin-top: 20px;
         transition: 0.2s;
         display: flex;
@@ -52,7 +59,7 @@
     .thumb {
         width: 120px;
         text-align: center;
-        font-size: 12px;
+        font-size: 13px;
     }
     .thumb img {
         width: 100%;
@@ -67,7 +74,7 @@
         background: #007bff;
         color: white;
         border: none;
-        padding: 14px 20px;
+        padding: 16px;
         border-radius: 8px;
         font-size: 18px;
         cursor: pointer;
@@ -88,13 +95,41 @@
         color: #555;
         margin-top: 5px;
     }
+
+    /* スマホ最適化 */
+    @media (max-width: 600px) {
+        h1 { font-size: 22px; }
+        h2 { font-size: 18px; }
+        button { font-size: 19px; padding: 18px; }
+        .thumb { width: 100px; }
+    }
+
+    .related-box {
+        background: #f7f9fc;
+        border: 1px solid #e3e7f0;
+        padding: 16px;
+        border-radius: 10px;
+        margin-top: 40px;
+    }
+    .related-box ul {
+        list-style: none;
+        padding-left: 0;
+        line-height: 1.8;
+    }
+    .related-box a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .related-box a:hover {
+        text-decoration: underline;
+    }
 </style>
 </head>
 <body>
 
 <h1>画像圧縮ツール（JPEG / PNG / WebP）</h1>
 
-<p style="text-align:center;color:#555; line-height:1.7;">
+<p style="text-align:center;color:#555;">
 この画像圧縮ツールは、ブラウザだけで JPEG・PNG・WebP のファイルサイズを削減できる無料オンラインサービスです。  
 <strong>画像はすべてブラウザ内で処理され、外部にアップロードされません。</strong>  
 画質を保ちながら圧縮でき、複数画像の一括圧縮にも対応しています。
@@ -122,8 +157,24 @@
     画像をリセットする
 </button>
 
-<h2 style="margin-top:30px;">圧縮結果プレビュー</h2>
+<h2>圧縮結果プレビュー</h2>
 <div id="previewZone"></div>
+
+<!-- 関連ツール -->
+<div class="related-box">
+    <h2>関連ツール</h2>
+    <ul>
+        <li>📏 <a href="/resize/">画像リサイズ</a></li>
+        <li>📦 <a href="/compress/">画像圧縮</a></li>
+        <li>✂️ <a href="/crop/">画像トリミング</a></li>
+        <li>🔁 <a href="/rotate/">画像回転</a></li>
+        <li>📄 <a href="/pdf/">PDF変換（画像→PDF / PDF→画像）</a></li>
+    </ul>
+</div>
+
+<p style="text-align:center; color:#777; margin-top:40px;">
+※このツールはすべてブラウザ内で処理され、画像は外部に送信されません。
+</p>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/">トップページに戻る</a>

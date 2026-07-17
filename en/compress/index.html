@@ -20,12 +20,6 @@
 
 <meta name="keywords" content="image compression, compress JPEG, compress PNG, compress WebP, reduce file size, image optimization, free tool">
 
-<meta property="og:title" content="Image Compression Tool｜Compress JPEG, PNG, WebP Online Without Losing Quality">
-<meta property="og:description" content="Compress JPEG, PNG, and WebP images directly in your browser. Batch compression supported.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/en/compress/">
-
 <style>
     body {
         font-family: sans-serif;
@@ -34,10 +28,18 @@
         margin: auto;
         background: #fff;
         color: #333;
+        line-height: 1.7;
     }
     h1 {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        font-size: 26px;
+    }
+    h2 {
+        margin-top: 30px;
+        border-left: 5px solid #007bff;
+        padding-left: 10px;
+        font-size: 20px;
     }
     #dropZone {
         width: 100%;
@@ -46,7 +48,6 @@
         border: 2px dashed #88a;
         background: #eef5ff;
         border-radius: 10px;
-        text-align: center;
         margin-top: 20px;
         transition: 0.2s;
         display: flex;
@@ -58,7 +59,7 @@
     .thumb {
         width: 120px;
         text-align: center;
-        font-size: 12px;
+        font-size: 13px;
     }
     .thumb img {
         width: 100%;
@@ -73,7 +74,7 @@
         background: #007bff;
         color: white;
         border: none;
-        padding: 14px 20px;
+        padding: 16px;
         border-radius: 8px;
         font-size: 18px;
         cursor: pointer;
@@ -94,15 +95,43 @@
         color: #555;
         margin-top: 5px;
     }
+
+    /* Mobile optimization */
+    @media (max-width: 600px) {
+        h1 { font-size: 22px; }
+        h2 { font-size: 18px; }
+        button { font-size: 19px; padding: 18px; }
+        .thumb { width: 100px; }
+    }
+
+    .related-box {
+        background: #f7f9fc;
+        border: 1px solid #e3e7f0;
+        padding: 16px;
+        border-radius: 10px;
+        margin-top: 40px;
+    }
+    .related-box ul {
+        list-style: none;
+        padding-left: 0;
+        line-height: 1.8;
+    }
+    .related-box a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .related-box a:hover {
+        text-decoration: underline;
+    }
 </style>
 </head>
 <body>
 
 <h1>Image Compression Tool (JPEG / PNG / WebP)</h1>
 
-<p style="text-align:center;color:#555; line-height:1.7;">
-This image compression tool allows you to reduce the file size of JPEG, PNG, and WebP images directly in your browser.  
-<strong>All processing is done locally — your images are never uploaded.</strong>  
+<p style="text-align:center;color:#555;">
+This tool allows you to compress JPEG, PNG, and WebP images directly in your browser.  
+<strong>All processing is done locally — your images never leave your device.</strong>  
 It maintains high quality and supports batch compression.
 </p>
 
@@ -128,8 +157,24 @@ It maintains high quality and supports batch compression.
     Reset Images
 </button>
 
-<h2 style="margin-top:30px;">Compression Preview</h2>
+<h2>Compression Preview</h2>
 <div id="previewZone"></div>
+
+<!-- Related tools -->
+<div class="related-box">
+    <h2>Related Tools</h2>
+    <ul>
+        <li>📏 <a href="/en/resize/">Image Resize</a></li>
+        <li>📦 <a href="/en/compress/">Image Compression</a></li>
+        <li>✂️ <a href="/en/crop/">Image Cropping</a></li>
+        <li>🔁 <a href="/en/rotate/">Image Rotation</a></li>
+        <li>📄 <a href="/en/pdf/">PDF Conversion (Images → PDF / PDF → Images)</a></li>
+    </ul>
+</div>
+
+<p style="text-align:center; color:#777; margin-top:40px;">
+※ All processing is done locally in your browser. No files are uploaded.
+</p>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/en/">Back to Top Page</a>

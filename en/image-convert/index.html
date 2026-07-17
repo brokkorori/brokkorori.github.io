@@ -20,15 +20,6 @@
 
 <meta name="keywords" content="image conversion, convert JPEG, convert PNG, convert WebP, convert HEIC, iPhone HEIC, batch conversion, free tool">
 
-<meta property="og:title" content="Image Conversion Tool｜Convert JPEG, PNG, WebP, HEIC Online">
-<meta property="og:description" content="Convert JPEG, PNG, WebP, and HEIC images directly in your browser. Safe local processing and batch conversion supported.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://brokkorori.github.io/image-convert/ogp.jpg">
-<meta property="og:url" content="https://brokkorori.github.io/en/image-convert/">
-
-<!-- HEIC support -->
-<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
-
 <style>
     body {
         font-family: sans-serif;
@@ -37,10 +28,18 @@
         margin: auto;
         background: #fff;
         color: #333;
+        line-height: 1.7;
     }
     h1 {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        font-size: 26px;
+    }
+    h2 {
+        margin-top: 30px;
+        border-left: 5px solid #007bff;
+        padding-left: 10px;
+        font-size: 20px;
     }
     #dropZone {
         width: 100%;
@@ -49,7 +48,6 @@
         border: 2px dashed #88a;
         background: #eef5ff;
         border-radius: 10px;
-        text-align: center;
         margin-top: 20px;
         transition: 0.2s;
         display: flex;
@@ -61,7 +59,7 @@
     .thumb {
         width: 120px;
         text-align: center;
-        font-size: 12px;
+        font-size: 13px;
     }
     .thumb img {
         width: 100%;
@@ -70,7 +68,7 @@
     }
     select {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         font-size: 18px;
         margin-top: 20px;
         border-radius: 8px;
@@ -80,7 +78,7 @@
         background: #007bff;
         color: white;
         border: none;
-        padding: 14px 20px;
+        padding: 16px;
         border-radius: 8px;
         font-size: 18px;
         cursor: pointer;
@@ -96,17 +94,45 @@
         border: 1px solid #ccc;
         border-radius: 6px;
     }
+
+    /* Mobile optimization */
+    @media (max-width: 600px) {
+        h1 { font-size: 22px; }
+        h2 { font-size: 18px; }
+        select { font-size: 17px; padding: 14px; }
+        button { font-size: 19px; padding: 18px; }
+        .thumb { width: 100px; }
+    }
+
+    .related-box {
+        background: #f7f9fc;
+        border: 1px solid #e3e7f0;
+        padding: 16px;
+        border-radius: 10px;
+        margin-top: 40px;
+    }
+    .related-box ul {
+        list-style: none;
+        padding-left: 0;
+        line-height: 1.8;
+    }
+    .related-box a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .related-box a:hover {
+        text-decoration: underline;
+    }
 </style>
 </head>
 <body>
 
 <h1>Image Conversion Tool (JPEG / PNG / WebP / HEIC)</h1>
 
-<p style="text-align:center;color:#555; line-height:1.7;">
+<p style="text-align:center;color:#555;">
 This tool allows you to convert images to JPEG, PNG, or WebP directly in your browser.  
-<strong>All processing is done locally on your device — your images are never uploaded.</strong>  
-iPhone HEIC images are fully supported, and batch conversion is available.  
-Simply drag & drop your files to begin.
+<strong>All processing is done locally — your images never leave your device.</strong>  
+HEIC images from iPhone are fully supported, and batch conversion is available.
 </p>
 
 <h2>About Each Format</h2>
@@ -133,12 +159,31 @@ Simply drag & drop your files to begin.
     Reset Images
 </button>
 
-<h2 style="margin-top:30px;">Conversion Preview</h2>
+<h2>Conversion Preview</h2>
 <div id="previewZone"></div>
+
+<!-- Related tools -->
+<div class="related-box">
+    <h2>Related Tools</h2>
+    <ul>
+        <li>📏 <a href="/en/resize/">Image Resize</a></li>
+        <li>📦 <a href="/en/compress/">Image Compression</a></li>
+        <li>✂️ <a href="/en/crop/">Image Cropping</a></li>
+        <li>🔁 <a href="/en/rotate/">Image Rotation</a></li>
+        <li>📄 <a href="/en/pdf/">PDF Conversion (Images → PDF / PDF → Images)</a></li>
+    </ul>
+</div>
+
+<p style="text-align:center; color:#777; margin-top:40px;">
+※ All processing is done locally in your browser. No files are uploaded.
+</p>
 
 <p style="margin-top:30px; text-align:center;">
     <a href="/en/">Back to Top Page</a>
 </p>
+
+<!-- HEIC support -->
+<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
 
 <script>
 let selectedFiles = [];

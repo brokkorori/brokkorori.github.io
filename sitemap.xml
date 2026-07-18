@@ -1,28 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <url><loc>https://brokkorori.github.io/</loc><priority>1.0</priority></url>
-
-  <url><loc>https://brokkorori.github.io/image-convert/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/resize/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/compress/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/crop/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/rotate/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/pdf/</loc><priority>0.9</priority></url>
-
-  <url><loc>https://brokkorori.github.io/privacy/</loc><priority>0.5</priority></url>
-  <url><loc>https://brokkorori.github.io/contact/</loc><priority>0.5</priority></url>
-
-  <url><loc>https://brokkorori.github.io/en/</loc><priority>0.9</priority></url>
-
-  <url><loc>https://brokkorori.github.io/en/image-convert/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/en/resize/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/en/compress/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/en/crop/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/en/rotate/</loc><priority>0.9</priority></url>
-  <url><loc>https://brokkorori.github.io/en/pdf/</loc><priority>0.9</priority></url>
-
-  <url><loc>https://brokkorori.github.io/en/privacy/</loc><priority>0.5</priority></url>
-  <url><loc>https://brokkorori.github.io/en/contact/</loc><priority>0.5</priority></url>
-
+  <url>
+    <loc>https://brokkorori.github.io/</loc>
+  </url>
+  <url>
+    <loc>https://brokkorori.github.io/convert</loc>
+  </url>
+  <url>
+    <loc>https://brokkorori.github.io/tool</loc>
+  </url>
 </urlset>

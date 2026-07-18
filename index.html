@@ -11,6 +11,10 @@
       gtag('config', 'G-M3P9TPTXJK');
     </script>
 
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5394192651024190"
+        crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -18,7 +22,6 @@
 
     <meta name="description" content="ブラウザだけで画像を編集できる無料オンラインツール集。JPEG・PNG・WebP・HEIC変換、リサイズ、圧縮、トリミング、回転、PDF変換に対応。画像はすべてローカル処理され、外部にアップロードされません。">
 
-    <!-- ⭐ 修正ポイント：トップ階層の ogp.jpg を参照 -->
     <meta property="og:image" content="https://brokkorori.github.io/ogp.jpg">
 
     <style>
@@ -27,12 +30,10 @@
             max-width: 1100px;
             margin: auto;
             padding: 30px 16px 60px;
-            background: #f5f6f8; /* Notion風の薄グレー */
+            background: #f5f6f8;
             color: #333;
             line-height: 1.7;
         }
-
-        /* ---------------- Hero ---------------- */
         header {
             text-align: center;
             margin-bottom: 40px;
@@ -68,8 +69,6 @@
             text-decoration: none;
             font-size: 14px;
         }
-
-        /* ---------------- Section ---------------- */
         h2 {
             margin: 30px 0 14px;
             font-size: 20px;
@@ -81,8 +80,6 @@
             font-size: 14px;
             margin-bottom: 14px;
         }
-
-        /* ---------------- Cards ---------------- */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -124,8 +121,6 @@
             font-size: 11px;
             color: #999;
         }
-
-        /* ---------------- Purpose Cards ---------------- */
         .purpose-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -143,8 +138,6 @@
             text-decoration: none;
             font-size: 15px;
         }
-
-        /* ---------------- Safety ---------------- */
         .safety-box {
             background: #ffffff;
             border-radius: 12px;
@@ -154,15 +147,12 @@
             font-size: 14px;
             color: #555;
         }
-
-        /* ---------------- Footer ---------------- */
         footer {
             margin-top: 40px;
             text-align: center;
             font-size: 13px;
             color: #777;
         }
-
         @media (max-width: 600px) {
             h1 { font-size: 22px; }
             .card-title { font-size: 16px; }
@@ -195,31 +185,12 @@
     <p class="section-desc">やりたい作業から最適なツールを選べます。</p>
 
     <div class="purpose-grid">
-
-        <div class="purpose-card">
-            📦 スマホ写真を軽くしたい → <a href="/compress/">画像圧縮</a>
-        </div>
-
-        <div class="purpose-card">
-            🔄 HEICをJPGにしたい → <a href="/image-convert/">画像変換</a>
-        </div>
-
-        <div class="purpose-card">
-            📏 ブログ用にサイズを揃えたい → <a href="/resize/">画像リサイズ</a>
-        </div>
-
-        <div class="purpose-card">
-            ✂️ 不要部分を切り取りたい → <a href="/crop/">画像トリミング</a>
-        </div>
-
-        <div class="purpose-card">
-            🔁 写真の向きを直したい → <a href="/rotate/">画像回転</a>
-        </div>
-
-        <div class="purpose-card">
-            📄 画像をPDFにまとめたい → <a href="/pdf/">PDF変換</a>
-        </div>
-
+        <div class="purpose-card">📦 スマホ写真を軽くしたい → <a href="/compress/">画像圧縮</a></div>
+        <div class="purpose-card">🔄 HEICをJPGにしたい → <a href="/image-convert/">画像変換</a></div>
+        <div class="purpose-card">📏 ブログ用にサイズを揃えたい → <a href="/resize/">画像リサイズ</a></div>
+        <div class="purpose-card">✂️ 不要部分を切り取りたい → <a href="/crop/">画像トリミング</a></div>
+        <div class="purpose-card">🔁 写真の向きを直したい → <a href="/rotate/">画像回転</a></div>
+        <div class="purpose-card">📄 画像をPDFにまとめたい → <a href="/pdf/">PDF変換</a></div>
     </div>
 </section>
 
@@ -229,13 +200,11 @@
     <p class="section-desc">よく使われている定番ツールです。</p>
 
     <div class="purpose-grid">
-
         <div class="purpose-card">1位：📦 <a href="/compress/">画像圧縮</a></div>
         <div class="purpose-card">2位：🔄 <a href="/image-convert/">画像変換</a></div>
         <div class="purpose-card">3位：📏 <a href="/resize/">画像リサイズ</a></div>
         <div class="purpose-card">4位：📄 <a href="/pdf/">PDF変換</a></div>
         <div class="purpose-card">5位：✂️ <a href="/crop/">画像トリミング</a></div>
-
     </div>
 </section>
 
@@ -245,7 +214,6 @@
     <p class="section-desc">日常的によく使う画像処理をまとめています。</p>
 
     <div class="grid">
-
         <div class="card">
             <div class="card-title"><span class="card-icon">🔄</span><a href="/image-convert/">画像変換（JPEG / PNG / WebP / HEIC）</a></div>
             <div class="card-desc">HEIC対応。複数ファイルの一括変換が可能。</div>
@@ -275,7 +243,6 @@
             <div class="card-desc">90°・180°・270°に回転可能。</div>
             <div class="card-meta">回転 / プレビュー表示</div>
         </div>
-
     </div>
 </section>
 

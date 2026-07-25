@@ -1,0 +1,331 @@
+/* ===================================================================
+   ととのい暦 - 共通スタイル
+   配色: 生成り紙 #EDEAE1 / 墨 #33352D / よもぎ緑 #6E7F5C
+        / 柿渋色 #A6592E / からし色 #C99A3D
+   =================================================================== */
+
+:root {
+  --washi: #EDEAE1;
+  --washi-deep: #E3DFD2;
+  --sumi: #33352D;
+  --sumi-soft: #5B5D52;
+  --yomogi: #6E7F5C;
+  --kakishibu: #A6592E;
+  --karashi: #C99A3D;
+  --line: #D8D2C2;
+  --max-width: 960px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--washi);
+  color: var(--sumi);
+  font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--kakishibu); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3 {
+  font-family: "Shippori Mincho", serif;
+  color: var(--sumi);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+/* ---------- ヘッダー ---------- */
+.site-header {
+  background: var(--sumi);
+  color: var(--washi);
+  padding: 28px 0 22px;
+  border-bottom: 4px solid var(--karashi);
+}
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.site-logo {
+  font-family: "Shippori Mincho", serif;
+  font-size: 26px;
+  color: var(--washi);
+  letter-spacing: 0.04em;
+}
+.site-logo:hover { text-decoration: none; opacity: 0.85; }
+.site-tagline {
+  font-size: 13px;
+  color: #C9C6B8;
+  margin-top: 4px;
+}
+.site-nav a {
+  color: var(--washi);
+  font-size: 13px;
+  margin-left: 16px;
+  opacity: 0.85;
+}
+.site-nav a:first-child { margin-left: 0; }
+
+/* ---------- 二十四節気バー ---------- */
+.sekki-bar-section {
+  background: var(--washi-deep);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 0;
+}
+.sekki-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  scrollbar-width: thin;
+}
+.sekki-bar::-webkit-scrollbar { height: 5px; }
+.sekki-bar::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+
+.sekki-pill {
+  flex: 0 0 auto;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--sumi-soft);
+  font-size: 12.5px;
+  font-family: "Shippori Mincho", serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.15s;
+}
+.sekki-pill:hover { border-color: var(--yomogi); color: var(--yomogi); }
+.sekki-pill.is-current {
+  background: var(--karashi);
+  border-color: var(--karashi);
+  color: #fff;
+  font-weight: 600;
+}
+
+.sekki-tip {
+  margin-top: 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--kakishibu);
+  border-radius: 6px;
+  padding: 14px 18px;
+  font-size: 14px;
+  display: none;
+}
+.sekki-tip.is-active { display: block; }
+.sekki-tip .sekki-tip-title {
+  font-family: "Shippori Mincho", serif;
+  font-size: 16px;
+  color: var(--kakishibu);
+  margin-bottom: 6px;
+}
+.sekki-tip .sekki-tip-title small {
+  font-family: "Zen Kaku Gothic New", sans-serif;
+  color: var(--sumi-soft);
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+/* ---------- 広告枠（審査後に差し替え） ---------- */
+.ad-slot {
+  max-width: var(--max-width);
+  margin: 26px auto;
+  padding: 0 18px;
+}
+.ad-slot .ad-slot-inner {
+  border: 1px dashed #BDB8A4;
+  background: #F5F3EC;
+  border-radius: 8px;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #A39D89;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- セクション見出し ---------- */
+.section-title {
+  font-size: 20px;
+  margin: 40px 0 4px;
+  border-left: 5px solid var(--yomogi);
+  padding-left: 12px;
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--sumi-soft);
+  margin: 0 0 18px 17px;
+}
+
+/* ---------- 記事カード一覧 ---------- */
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+  margin-bottom: 10px;
+}
+.article-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.article-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(51,53,45,0.08);
+}
+.article-card-emoji {
+  font-size: 34px;
+  background: var(--washi-deep);
+  padding: 22px 0;
+  text-align: center;
+}
+.article-card-body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+.article-card-tag {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--yomogi);
+  border: 1px solid var(--yomogi);
+  border-radius: 999px;
+  padding: 2px 9px;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+.article-card-title {
+  font-family: "Shippori Mincho", serif;
+  font-size: 17px;
+  margin: 0 0 8px;
+}
+.article-card-title a { color: var(--sumi); }
+.article-card-excerpt {
+  font-size: 13px;
+  color: var(--sumi-soft);
+  flex: 1;
+}
+.article-card-meta {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #A39D89;
+}
+
+/* ---------- パンくず ---------- */
+.breadcrumb {
+  font-size: 12px;
+  color: var(--sumi-soft);
+  margin: 18px 0;
+}
+.breadcrumb a { color: var(--sumi-soft); }
+
+/* ---------- 記事本文 ---------- */
+.article-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+@media (min-width: 800px) {
+  .article-layout { grid-template-columns: minmax(0,1fr) 260px; }
+}
+
+.article-header { margin-bottom: 20px; }
+.article-header .article-card-tag { margin-bottom: 10px; }
+.article-title {
+  font-size: 27px;
+  margin: 0 0 12px;
+}
+.article-meta {
+  font-size: 12px;
+  color: var(--sumi-soft);
+}
+.article-lead {
+  font-size: 15px;
+  color: var(--sumi-soft);
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+.article-body h2 {
+  font-size: 20px;
+  margin: 34px 0 12px;
+  border-left: 5px solid var(--kakishibu);
+  padding-left: 12px;
+}
+.article-body h3 {
+  font-size: 16px;
+  margin: 22px 0 8px;
+  color: var(--yomogi);
+}
+.article-body p { font-size: 15px; margin: 0 0 16px; }
+.article-body ul, .article-body ol { font-size: 15px; padding-left: 22px; margin: 0 0 16px; }
+.article-body li { margin-bottom: 6px; }
+
+.season-box {
+  margin: 26px 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--karashi);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.season-box-title {
+  font-family: "Shippori Mincho", serif;
+  color: var(--karashi);
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+/* ---------- サイドバー ---------- */
+.sidebar-box {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.sidebar-box h3 {
+  font-family: "Shippori Mincho", serif;
+  font-size: 14px;
+  margin: 0 0 10px;
+  color: var(--sumi);
+}
+.sidebar-box ul { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+.sidebar-box li { margin-bottom: 8px; }
+.sidebar-ad .ad-slot { margin: 0; padding: 0; }
+.sidebar-ad .ad-slot-inner { min-height: 250px; }
+
+/* ---------- 関連記事 ---------- */
+.related-articles { margin-top: 44px; }
+
+/* ---------- フッター ---------- */
+.site-footer {
+  margin-top: 50px;
+  background: var(--sumi);
+  color: #C9C6B8;
+  text-align: center;
+  padding: 26px 16px;
+  font-size: 12px;
+}
+.site-footer a { color: var(--washi); }
+
+@media (max-width: 600px) {
+  .site-logo { font-size: 22px; }
+  .article-title { font-size: 22px; }
+}

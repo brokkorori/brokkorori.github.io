@@ -138,23 +138,12 @@ h1, h2, h3 {
   margin-left: 6px;
 }
 
-/* ---------- 広告枠（審査後に差し替え） ---------- */
+/* ---------- 広告枠 ---------- */
 .ad-slot {
   max-width: var(--max-width);
   margin: 26px auto;
   padding: 0 18px;
-}
-.ad-slot .ad-slot-inner {
-  border: 1px dashed #BDB8A4;
-  background: #F5F3EC;
-  border-radius: 8px;
-  min-height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #A39D89;
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  text-align: center;
 }
 
 /* ---------- セクション見出し ---------- */
@@ -309,7 +298,6 @@ h1, h2, h3 {
 .sidebar-box ul { list-style: none; padding: 0; margin: 0; font-size: 13px; }
 .sidebar-box li { margin-bottom: 8px; }
 .sidebar-ad .ad-slot { margin: 0; padding: 0; }
-.sidebar-ad .ad-slot-inner { min-height: 250px; }
 
 /* ---------- 関連記事 ---------- */
 .related-articles { margin-top: 44px; }

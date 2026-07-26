@@ -281,6 +281,23 @@ h1, h2, h3 {
   margin-bottom: 6px;
 }
 
+/* ---------- 図解 ---------- */
+.illust-box {
+  margin: 26px 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+}
+.illust-box svg { max-width: 100%; height: auto; }
+.illust-box figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--sumi-soft);
+  text-align: left;
+}
+
 /* ---------- サイドバー ---------- */
 .sidebar-box {
   background: #fff;
